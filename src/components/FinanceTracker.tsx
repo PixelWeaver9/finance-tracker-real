@@ -198,9 +198,9 @@ export default function FinanceTracker() {
 
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 md:px-6 pb-24 md:pb-10">
-        {/* Desktop Action Bar */}
-        <div className="hidden md:flex items-center justify-end gap-2 mb-6">
+      <div className="w-full max-w-6xl mx-auto px-4 pb-20 md:pb-10">
+        {/* Desktop Only: Action Bar */}
+        <div className="hidden md:flex items-center justify-end gap-2 mb-6 mt-4">
           <Button
             variant="outline"
             onClick={() => {
@@ -224,13 +224,39 @@ export default function FinanceTracker() {
           </Button>
         </div>
 
-        {/* Mobile: Show content based on active tab */}
-        <div className="md:hidden">
+        {/* Mobile Only: Tab Content */}
+        <div className="block md:hidden mt-4">
           {activeTab === "home" && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <StatsCards stats={stats} />
+              <div className="bg-white rounded-lg border border-gray-200 p-4">
+                <h3 className="font-semibold text-gray-900 mb-3">Transaksi Terbaru</h3>
+                <TransactionList
+                  transactions={transactions.slice(0, 5)}
+                  filter={filter}
+                  setFilter={setFilter}
+                  loading={loading}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </div>
+            </div>
+          )}
+          
+          {activeTab === "chart" && (
+            <div className="space-y-4">
+              <StatsCards stats={stats} />
+              <ExpenseChart refreshTrigger={refreshTrigger} />
+            </div>
+          )}
+          
+          {activeTab === "list" && (
+            <div className="space-y-4">
               <TransactionList
-                transactions={transactions.slice(0, 5)}
+                transactions={transactions}
                 filter={filter}
                 setFilter={setFilter}
                 loading={loading}
@@ -242,30 +268,9 @@ export default function FinanceTracker() {
               />
             </div>
           )}
-          
-          {activeTab === "chart" && (
-            <div className="space-y-6">
-              <StatsCards stats={stats} />
-              <ExpenseChart refreshTrigger={refreshTrigger} />
-            </div>
-          )}
-          
-          {activeTab === "list" && (
-            <TransactionList
-              transactions={transactions}
-              filter={filter}
-              setFilter={setFilter}
-              loading={loading}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              page={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
-          )}
         </div>
 
-        {/* Desktop: Show all content */}
+        {/* Desktop Only: Full Layout */}
         <div className="hidden md:block">
           <StatsCards stats={stats} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start mt-6">
@@ -302,57 +307,61 @@ export default function FinanceTracker() {
         />
       </div>
 
-      {/* Mobile Bottom Navigation (Android Style) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
-        <div className="grid grid-cols-4 gap-1 px-2 py-2">
+      {/* Mobile Only: Bottom Navigation (Android Style) */}
+      <nav className="block md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50 safe-area-inset-bottom">
+        <div className="grid grid-cols-4 h-16">
+          {/* Home Tab */}
           <button
             onClick={() => setActiveTab("home")}
-            className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === "home"
-                ? "bg-blue-50 text-blue-600"
-                : "text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-50 text-blue-600 border-t-2 border-blue-600"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
-            <Home size={22} />
-            <span className="text-xs mt-1 font-medium">Home</span>
+            <Home size={22} strokeWidth={activeTab === "home" ? 2.5 : 2} />
+            <span className="text-[10px] font-medium">Home</span>
           </button>
           
+          {/* Chart Tab */}
           <button
             onClick={() => setActiveTab("chart")}
-            className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === "chart"
-                ? "bg-blue-50 text-blue-600"
-                : "text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-50 text-blue-600 border-t-2 border-blue-600"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
-            <BarChart3 size={22} />
-            <span className="text-xs mt-1 font-medium">Chart</span>
+            <BarChart3 size={22} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
+            <span className="text-[10px] font-medium">Chart</span>
           </button>
           
+          {/* List Tab */}
           <button
             onClick={() => setActiveTab("list")}
-            className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === "list"
-                ? "bg-blue-50 text-blue-600"
-                : "text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-50 text-blue-600 border-t-2 border-blue-600"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
-            <List size={22} />
-            <span className="text-xs mt-1 font-medium">List</span>
+            <List size={22} strokeWidth={activeTab === "list" ? 2.5 : 2} />
+            <span className="text-[10px] font-medium">List</span>
           </button>
           
+          {/* Add Button */}
           <button
             onClick={() => {
               resetForm();
               setShowModal(true);
             }}
-            className="flex flex-col items-center justify-center py-2 px-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all"
+            className="flex flex-col items-center justify-center gap-1 bg-blue-600 text-white hover:bg-blue-700 transition-all"
           >
-            <PlusCircle size={22} />
-            <span className="text-xs mt-1 font-medium">Add</span>
+            <PlusCircle size={22} strokeWidth={2.5} />
+            <span className="text-[10px] font-semibold">Add</span>
           </button>
         </div>
-      </div>
+      </nav>
     </>
   );
 }
