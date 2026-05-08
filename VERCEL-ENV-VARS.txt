@@ -1,0 +1,60 @@
+========================================
+ENVIRONMENT VARIABLES UNTUK VERCEL
+========================================
+
+Copy paste variable di bawah ini ke Vercel Dashboard saat deploy:
+
+----------------------------------------
+Variable 1: DATABASE_URL
+----------------------------------------
+postgresql://postgres:_B.wj7MxBeQ%d,M@db.xodypyymccvsebruzkeu.supabase.co:5432/postgres
+
+----------------------------------------
+Variable 2: AUTH_SECRET
+----------------------------------------
+zI680GrkU6dCduGd6ciiFuwGbLCHfqqKpgyr3XONXu4=
+
+----------------------------------------
+Variable 3: NEXTAUTH_URL
+----------------------------------------
+https://finance-tracker-real.vercel.app
+
+CATATAN: 
+- Setelah deploy, Vercel akan kasih URL yang berbeda
+- Update NEXTAUTH_URL dengan URL yang benar dari Vercel
+- Contoh: https://finance-tracker-real-abc123.vercel.app
+
+========================================
+CARA DEPLOY KE VERCEL
+========================================
+
+1. Buka: https://vercel.com
+2. Sign up / Login dengan GitHub
+3. Click "Add New..." → "Project"
+4. Import repository: PixelWeaver9/finance-tracker-real
+5. Configure Project:
+   - Framework Preset: Next.js (auto-detect)
+   - Root Directory: ./ (default)
+   
+6. Environment Variables:
+   Click "Add" untuk setiap variable di atas:
+   
+   Name: DATABASE_URL
+   Value: [paste dari atas]
+   
+   Name: AUTH_SECRET
+   Value: [paste dari atas]
+   
+   Name: NEXTAUTH_URL
+   Value: [paste dari atas, nanti update setelah deploy]
+
+7. Click "Deploy"
+8. Tunggu 2-3 menit
+9. Setelah selesai, copy URL yang dikasih Vercel
+10. Update NEXTAUTH_URL:
+    - Settings → Environment Variables
+    - Edit NEXTAUTH_URL dengan URL yang benar
+    - Save
+    - Deployments → ... → Redeploy
+
+========================================
