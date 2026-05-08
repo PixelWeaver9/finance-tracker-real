@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { PlusCircle, RefreshCw } from "lucide-react";
+import { PlusCircle, RefreshCw, Home, BarChart3, List } from "lucide-react";
 import StatsCards from "./StatsCards";
 import TransactionList from "./TransactionList";
 import ExpenseChart from "./ExpenseChart";
@@ -36,6 +36,7 @@ export default function FinanceTracker() {
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [activeTab, setActiveTab] = useState<"home" | "chart" | "list">("home");
 
   // ── Fetch Stats ──
   const fetchStats = useCallback(async () => {
@@ -196,67 +197,162 @@ export default function FinanceTracker() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 pb-10">
-      {/* Action Bar */}
-      <div className="flex items-center justify-end gap-2 mb-6">
-        <Button
-          variant="outline"
-          onClick={() => {
-            setRefreshTrigger((prev) => prev + 1);
-            fetchTransactions();
-            fetchStats();
-          }}
-          disabled={loading}
-        >
-          <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
-          Refresh
-        </Button>
-        <Button
-          onClick={() => {
-            resetForm();
-            setShowModal(true);
-          }}
-        >
-          <PlusCircle size={20} />
-          Tambah
-        </Button>
+    <>
+      <div className="max-w-6xl mx-auto px-4 md:px-6 pb-24 md:pb-10">
+        {/* Desktop Action Bar */}
+        <div className="hidden md:flex items-center justify-end gap-2 mb-6">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setRefreshTrigger((prev) => prev + 1);
+              fetchTransactions();
+              fetchStats();
+            }}
+            disabled={loading}
+          >
+            <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+            Refresh
+          </Button>
+          <Button
+            onClick={() => {
+              resetForm();
+              setShowModal(true);
+            }}
+          >
+            <PlusCircle size={20} />
+            Tambah
+          </Button>
+        </div>
+
+        {/* Mobile: Show content based on active tab */}
+        <div className="md:hidden">
+          {activeTab === "home" && (
+            <div className="space-y-6">
+              <StatsCards stats={stats} />
+              <TransactionList
+                transactions={transactions.slice(0, 5)}
+                filter={filter}
+                setFilter={setFilter}
+                loading={loading}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            </div>
+          )}
+          
+          {activeTab === "chart" && (
+            <div className="space-y-6">
+              <StatsCards stats={stats} />
+              <ExpenseChart refreshTrigger={refreshTrigger} />
+            </div>
+          )}
+          
+          {activeTab === "list" && (
+            <TransactionList
+              transactions={transactions}
+              filter={filter}
+              setFilter={setFilter}
+              loading={loading}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
+          )}
+        </div>
+
+        {/* Desktop: Show all content */}
+        <div className="hidden md:block">
+          <StatsCards stats={stats} />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start mt-6">
+            <div className="lg:col-span-1 sticky top-6">
+              <ExpenseChart refreshTrigger={refreshTrigger} />
+            </div>
+            <div className="lg:col-span-2">
+              <TransactionList
+                transactions={transactions}
+                filter={filter}
+                setFilter={setFilter}
+                loading={loading}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Modal */}
+        <TransactionModal
+          showModal={showModal}
+          editingId={editingId}
+          formData={formData}
+          setFormData={setFormData}
+          loading={loading}
+          mlLoading={mlLoading}
+          mlStatus={mlStatus}
+          onSubmit={handleSubmit}
+          onClose={resetForm}
+        />
       </div>
 
-      {/* Stats */}
-      <StatsCards stats={stats} />
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        <div className="lg:col-span-1 sticky top-6">
-          <ExpenseChart refreshTrigger={refreshTrigger} />
-        </div>
-        <div className="lg:col-span-2">
-          {/* Transaction List */}
-          <TransactionList
-            transactions={transactions}
-            filter={filter}
-            setFilter={setFilter}
-            loading={loading}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            page={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
+      {/* Mobile Bottom Navigation (Android Style) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+        <div className="grid grid-cols-4 gap-1 px-2 py-2">
+          <button
+            onClick={() => setActiveTab("home")}
+            className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all ${
+              activeTab === "home"
+                ? "bg-blue-50 text-blue-600"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <Home size={22} />
+            <span className="text-xs mt-1 font-medium">Home</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab("chart")}
+            className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all ${
+              activeTab === "chart"
+                ? "bg-blue-50 text-blue-600"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <BarChart3 size={22} />
+            <span className="text-xs mt-1 font-medium">Chart</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab("list")}
+            className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all ${
+              activeTab === "list"
+                ? "bg-blue-50 text-blue-600"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <List size={22} />
+            <span className="text-xs mt-1 font-medium">List</span>
+          </button>
+          
+          <button
+            onClick={() => {
+              resetForm();
+              setShowModal(true);
+            }}
+            className="flex flex-col items-center justify-center py-2 px-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all"
+          >
+            <PlusCircle size={22} />
+            <span className="text-xs mt-1 font-medium">Add</span>
+          </button>
         </div>
       </div>
-
-      {/* Modal */}
-      <TransactionModal
-        showModal={showModal}
-        editingId={editingId}
-        formData={formData}
-        setFormData={setFormData}
-        loading={loading}
-        mlLoading={mlLoading}
-        mlStatus={mlStatus}
-        onSubmit={handleSubmit}
-        onClose={resetForm}
-      />
-    </div>
+    </>
   );
 }
