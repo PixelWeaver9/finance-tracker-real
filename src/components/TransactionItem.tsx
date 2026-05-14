@@ -44,10 +44,10 @@ export default function TransactionItem({
   onDelete,
 }: TransactionItemProps) {
   return (
-    <div className="flex items-center justify-between p-4 bg-white/60 backdrop-blur-sm border border-black/10 rounded-xl hover:bg-white/80 hover:border-black/20 transition-all group hover-lift">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/60 backdrop-blur-sm border border-black/10 rounded-xl hover:bg-white/80 hover:border-black/20 transition-all group hover-lift gap-3 sm:gap-0">
+      <div className="flex items-start sm:items-center gap-4">
         <div
-          className={`p-2.5 rounded-xl ${
+          className={`shrink-0 p-2.5 rounded-xl ${
             transaction.type === "income" ? "bg-black/5 border border-black/10" : "bg-black/5 border border-black/10"
           }`}
         >
@@ -58,12 +58,12 @@ export default function TransactionItem({
           )}
         </div>
 
-        <div>
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <h3 className="font-semibold text-black">{transaction.category}</h3>
+            <h3 className="font-semibold text-black truncate">{transaction.category}</h3>
             {transaction.confidence > 0 && (
               <span
-                className="text-[10px] px-2 py-0.5 rounded border flex items-center gap-1 bg-black/5 text-black/60 border-black/10"
+                className="shrink-0 text-[10px] px-2 py-0.5 rounded border flex items-center gap-1 bg-black/5 text-black/60 border-black/10 whitespace-nowrap"
                 title={`AI Confidence: ${Math.round(transaction.confidence * 100)}%`}
               >
                 <BrainCircuit size={10} />
@@ -71,21 +71,21 @@ export default function TransactionItem({
               </span>
             )}
           </div>
-          <p className="text-sm text-black/70">{transaction.description}</p>
+          <p className="text-sm text-black/70 truncate">{transaction.description}</p>
           <p className="text-xs text-black/50 mt-0.5">{formatDate(transaction.date)}</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between sm:justify-end gap-3 pl-[3.25rem] sm:pl-0 mt-1 sm:mt-0">
         <p
-          className={`text-lg font-bold ${
+          className={`text-base sm:text-lg font-bold whitespace-nowrap ${
             transaction.type === "income" ? "text-black" : "text-black"
           }`}
         >
           {transaction.type === "income" ? "+" : "-"}
           {formatCurrency(transaction.amount)}
         </p>
-        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEdit(transaction)}
             className="p-1.5 text-black/50 hover:text-black hover:bg-black/5 rounded transition-all"
