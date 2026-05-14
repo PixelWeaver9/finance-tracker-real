@@ -3,10 +3,15 @@
 import { signOut, useSession } from "next-auth/react";
 import { Wallet, LogOut, User, Menu } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [showMenu, setShowMenu] = useState(false);
+  const pathname = usePathname();
+
+  // Sembunyikan Navbar di halaman auth
+  if (pathname === "/login" || pathname === "/register") return null;
 
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm">
