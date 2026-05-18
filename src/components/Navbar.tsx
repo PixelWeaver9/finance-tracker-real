@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { Wallet, LogOut, User, Menu } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -10,84 +10,67 @@ export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const pathname = usePathname();
 
-  // Sembunyikan Navbar di halaman auth
+  // Hide navbar on auth pages
   if (pathname === "/login" || pathname === "/register") return null;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm">
-      <div className="w-full max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo & Title */}
-        <div className="flex items-center gap-2 animate-slide-in">
-          <div className="bg-black p-2 rounded-lg shadow-md">
-            <Wallet size={20} className="text-white" />
-          </div>
-          <div>
-            <h1 className="text-base md:text-xl font-bold text-black tracking-tight">Finance Tracker</h1>
-            <p className="hidden md:block text-xs text-black/50 font-medium uppercase tracking-wider">Professional</p>
-          </div>
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
+      <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+        {/* Logo - Text Only, Clean */}
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
+            Finance<span className="text-blue-600">.</span>
+          </h1>
         </div>
 
         {session?.user && (
           <>
-            {/* Desktop Only: Full User Info */}
-            <div className="hidden md:flex items-center gap-3 animate-fade-in">
-              <div className="flex items-center gap-3 bg-black/5 backdrop-blur-sm pl-3 pr-4 py-2 rounded-lg border border-black/10 hover:border-black/20 transition-all duration-200">
-                <div className="bg-black/10 p-1.5 rounded-md">
-                  <User size={14} className="text-black" />
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-black">{session.user?.name}</p>
-                  <p className="text-xs text-black/50">{session.user?.email}</p>
-                </div>
+            {/* Desktop: Clean User Info */}
+            <div className="hidden md:flex items-center gap-6">
+              <div className="text-right">
+                <p className="text-sm font-semibold text-gray-900">{session.user?.name}</p>
+                <p className="text-xs text-gray-500">{session.user?.email}</p>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="text-black/70 hover:text-black transition-all duration-200 bg-black/5 backdrop-blur-sm hover:bg-black/10 p-2.5 rounded-lg border border-black/10 hover:border-black/20"
-                title="Sign Out"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
               >
+                <span>Logout</span>
                 <LogOut size={16} />
               </button>
             </div>
 
-            {/* Mobile Only: Menu Button */}
+            {/* Mobile: Menu */}
             <div className="md:hidden relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="text-black/70 hover:text-black transition-all duration-200 bg-black/5 backdrop-blur-sm hover:bg-black/10 p-2 rounded-lg border border-black/10"
+                className="text-gray-600 hover:text-gray-900 transition-colors p-2"
                 aria-label="Menu"
               >
-                <Menu size={20} />
+                {showMenu ? <X size={24} /> : <Menu size={24} />}
               </button>
 
-              {/* Mobile Dropdown Menu */}
               {showMenu && (
                 <>
-                  {/* Backdrop */}
                   <div 
-                    className="fixed inset-0 bg-black/20 z-40"
+                    className="fixed inset-0 bg-black/10 z-40"
                     onClick={() => setShowMenu(false)}
                   />
                   
-                  {/* Menu */}
-                  <div className="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
-                    <div className="p-4 bg-gray-50 border-b border-gray-200">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="bg-black/10 p-1.5 rounded-md">
-                          <User size={16} className="text-black" />
-                        </div>
-                        <p className="text-sm font-semibold text-black truncate">{session.user?.name}</p>
-                      </div>
-                      <p className="text-xs text-black/50 truncate">{session.user?.email}</p>
+                  <div className="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+                    <div className="p-4 border-b border-gray-100">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{session.user?.name}</p>
+                      <p className="text-xs text-gray-500 truncate mt-1">{session.user?.email}</p>
                     </div>
                     <button
                       onClick={() => {
                         setShowMenu(false);
                         signOut({ callbackUrl: "/login" });
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50 transition-colors font-medium"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
                     >
                       <LogOut size={18} />
-                      <span>Sign Out</span>
+                      <span>Logout</span>
                     </button>
                   </div>
                 </>

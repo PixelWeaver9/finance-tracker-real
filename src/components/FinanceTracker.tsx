@@ -307,57 +307,57 @@ export default function FinanceTracker() {
         />
       </div>
 
-      {/* Mobile Only: Bottom Navigation (Android Style) */}
-      <nav className="block md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50 safe-area-inset-bottom">
-        <div className="grid grid-cols-4 h-16">
-          {/* Home Tab */}
+      {/* Mobile Only: Bottom Navigation - Clean & Minimal */}
+      <nav className="block md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+        <div className="grid grid-cols-4 h-14">
+          {/* Home */}
           <button
             onClick={() => setActiveTab("home")}
-            className={`flex flex-col items-center justify-center gap-1 transition-all ${
+            className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
               activeTab === "home"
-                ? "bg-blue-50 text-blue-600 border-t-2 border-blue-600"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "text-blue-600"
+                : "text-gray-400 hover:text-gray-600"
             }`}
           >
-            <Home size={22} strokeWidth={activeTab === "home" ? 2.5 : 2} />
+            <Home size={20} strokeWidth={activeTab === "home" ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Home</span>
           </button>
           
-          {/* Chart Tab */}
+          {/* Chart */}
           <button
             onClick={() => setActiveTab("chart")}
-            className={`flex flex-col items-center justify-center gap-1 transition-all ${
+            className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
               activeTab === "chart"
-                ? "bg-blue-50 text-blue-600 border-t-2 border-blue-600"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "text-blue-600"
+                : "text-gray-400 hover:text-gray-600"
             }`}
           >
-            <BarChart3 size={22} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
+            <BarChart3 size={20} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Chart</span>
           </button>
           
-          {/* List Tab */}
+          {/* List */}
           <button
             onClick={() => setActiveTab("list")}
-            className={`flex flex-col items-center justify-center gap-1 transition-all ${
+            className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
               activeTab === "list"
-                ? "bg-blue-50 text-blue-600 border-t-2 border-blue-600"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "text-blue-600"
+                : "text-gray-400 hover:text-gray-600"
             }`}
           >
-            <List size={22} strokeWidth={activeTab === "list" ? 2.5 : 2} />
+            <List size={20} strokeWidth={activeTab === "list" ? 2.5 : 2} />
             <span className="text-[10px] font-medium">List</span>
           </button>
           
-          {/* Add Button */}
+          {/* Add */}
           <button
             onClick={() => {
               resetForm();
               setShowModal(true);
             }}
-            className="flex flex-col items-center justify-center gap-1 bg-blue-600 text-white hover:bg-blue-700 transition-all"
+            className="flex flex-col items-center justify-center gap-0.5 text-blue-600 hover:text-blue-700 transition-colors"
           >
-            <PlusCircle size={22} strokeWidth={2.5} />
+            <PlusCircle size={20} strokeWidth={2.5} />
             <span className="text-[10px] font-semibold">Add</span>
           </button>
         </div>
