@@ -54,7 +54,7 @@ export default function RegisterPage() {
 
   return (
     <div 
-      className="h-screen flex items-center justify-center px-4 relative overflow-hidden"
+      className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden"
       style={{ background: 'var(--bg-primary)' }}
     >
       {/* Subtle gradient overlay */}
@@ -77,11 +77,18 @@ export default function RegisterPage() {
               fill="var(--gold-600)"
             />
           </div>
-          <h1 className="text-4xl font-serif font-semibold tracking-tight mb-2">
+          <h1 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: 700,
+            letterSpacing: 'var(--tracking-tighter)',
+            lineHeight: 'var(--leading-tight)',
+            marginBottom: '0.5rem'
+          }}>
             <span style={{ color: 'var(--text-primary)' }}>Finance</span>
-            <span style={{ color: 'var(--gold-500)' }} className="font-serif italic"> Royale</span>
+            <span style={{ color: 'var(--gold-500)', fontStyle: 'italic' }}> Royale</span>
           </h1>
-          <p className="text-sm font-medium" style={{ color: 'var(--text-tertiary)' }}>
+          <p className="text-caption" style={{ fontWeight: 500 }}>
             Join the elite financial management
           </p>
         </div>
@@ -109,10 +116,7 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Name */}
               <div>
-                <label 
-                  className="block text-sm font-semibold mb-2"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
+                <label className="text-label block mb-2">
                   Full Name
                 </label>
                 <input
@@ -124,6 +128,8 @@ export default function RegisterPage() {
                     background: 'var(--bg-tertiary)',
                     borderColor: 'var(--border-default)',
                     color: 'var(--text-primary)',
+                    fontSize: 'var(--text-base)',
+                    fontFamily: 'var(--font-body)'
                   }}
                   placeholder="John Doe"
                   required
@@ -132,10 +138,7 @@ export default function RegisterPage() {
 
               {/* Email */}
               <div>
-                <label 
-                  className="block text-sm font-semibold mb-2"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
+                <label className="text-label block mb-2">
                   Email Address
                 </label>
                 <input
@@ -147,6 +150,8 @@ export default function RegisterPage() {
                     background: 'var(--bg-tertiary)',
                     borderColor: 'var(--border-default)',
                     color: 'var(--text-primary)',
+                    fontSize: 'var(--text-base)',
+                    fontFamily: 'var(--font-body)'
                   }}
                   placeholder="your@email.com"
                   required
@@ -155,10 +160,7 @@ export default function RegisterPage() {
 
               {/* Password */}
               <div>
-                <label 
-                  className="block text-sm font-semibold mb-2"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
+                <label className="text-label block mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -188,10 +190,7 @@ export default function RegisterPage() {
 
               {/* Confirm Password */}
               <div>
-                <label 
-                  className="block text-sm font-semibold mb-2"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
+                <label className="text-label block mb-2">
                   Confirm Password
                 </label>
                 <input
@@ -203,6 +202,8 @@ export default function RegisterPage() {
                     background: 'var(--bg-tertiary)',
                     borderColor: 'var(--border-default)',
                     color: 'var(--text-primary)',
+                    fontSize: 'var(--text-base)',
+                    fontFamily: 'var(--font-body)'
                   }}
                   placeholder="Repeat password"
                   required
@@ -213,10 +214,13 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-lg text-sm font-semibold transition-all hover-scale shadow-gold flex items-center justify-center gap-2 mt-6"
+                className="w-full py-3.5 rounded-lg transition-all hover-scale shadow-gold flex items-center justify-center gap-2 mt-6"
                 style={{
                   background: 'var(--gradient-gold)',
                   color: 'var(--bg-primary)',
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: 600,
+                  letterSpacing: 'var(--tracking-wide)'
                 }}
               >
                 {loading ? (
@@ -234,12 +238,15 @@ export default function RegisterPage() {
             <div className="divider-luxury my-6" />
 
             {/* Login Link */}
-            <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-center text-caption">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-semibold transition-all hover:underline"
-                style={{ color: 'var(--gold-500)' }}
+                className="transition-all hover:underline"
+                style={{ 
+                  color: 'var(--gold-500)',
+                  fontWeight: 600
+                }}
               >
                 Sign in
               </Link>
@@ -248,10 +255,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Footer */}
-        <p 
-          className="text-center text-xs font-medium mt-8 animate-fade-in animate-delay-400"
-          style={{ color: 'var(--text-disabled)' }}
-        >
+        <p className="text-center text-micro mt-8 animate-fade-in animate-delay-400">
           Finance Royale · Premium Financial Management
         </p>
       </div>

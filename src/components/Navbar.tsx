@@ -30,30 +30,38 @@ export default function Navbar() {
               fill="var(--gold-600)"
             />
           </div>
-          <h1 className="text-xl font-serif font-semibold tracking-tight">
+          <h1 style={{ 
+            fontFamily: 'var(--font-display)',
+            fontSize: 'var(--text-md)',
+            fontWeight: 600,
+            letterSpacing: 'var(--tracking-tight)',
+            lineHeight: 1
+          }}>
             <span style={{ color: 'var(--text-primary)' }}>Finance</span>
-            <span style={{ color: 'var(--gold-500)' }} className="font-serif italic"> Royale</span>
+            <span style={{ color: 'var(--gold-500)', fontStyle: 'italic' }}> Royale</span>
           </h1>
         </div>
 
         {/* User info + logout */}
         <div className="flex items-center gap-4">
           <div className="hidden md:flex flex-col items-end">
-            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+            <span className="text-body-emphasis" style={{ fontSize: 'var(--text-sm)' }}>
               {session.user?.name}
             </span>
-            <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+            <span className="text-caption">
               {session.user?.email}
             </span>
           </div>
           
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="px-4 py-2 rounded-lg border transition-all hover-gold text-sm font-medium flex items-center gap-2"
+            className="px-4 py-2 rounded-lg border transition-all hover-gold flex items-center gap-2"
             style={{
               borderColor: 'var(--border-default)',
               background: 'transparent',
-              color: 'var(--text-secondary)'
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 500
             }}
           >
             <LogOut size={16} />

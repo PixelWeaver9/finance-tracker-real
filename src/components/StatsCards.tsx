@@ -57,16 +57,10 @@ export default function StatsCards({ stats }: StatsCardsProps) {
             <div className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <p 
-                    className="text-xs font-semibold tracking-wider uppercase mb-2"
-                    style={{ color: 'var(--text-tertiary)' }}
-                  >
+                  <p className="text-label mb-3">
                     {card.label}
                   </p>
-                  <p 
-                    className="text-3xl md:text-4xl font-serif font-semibold font-mono-tabular"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
+                  <p className="text-display-number font-mono-tabular">
                     {formatCurrency(card.value)}
                   </p>
                 </div>
@@ -102,10 +96,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
                     }}
                   />
                 </div>
-                <span 
-                  className="text-xs font-medium"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
+                <span className="text-caption font-medium">
                   {Math.min(Math.abs(card.value) / 10000000 * 100, 100).toFixed(0)}%
                 </span>
               </div>

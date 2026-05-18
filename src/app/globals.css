@@ -80,19 +80,152 @@ body {
   left: 0;
 }
 
-/* Serif headings for elegance */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Georgia", "Times New Roman", "Playfair Display", serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+/* ============================================
+   TYPOGRAPHY SYSTEM - Luxury Refined
+   ============================================ */
+
+/* Font Families */
+:root {
+  /* Display serif - elegant, authoritative */
+  --font-display: "Cormorant Garamond", "Libre Baskerville", "Georgia", "Times New Roman", serif;
+  
+  /* Body sans - refined, readable */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Text", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* Monospace - financial data */
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", "Courier New", monospace;
 }
 
-/* Monospace for financial data - refined */
+/* Type Scale - 1.25 ratio (Major Third) */
+:root {
+  --text-xs:    0.64rem;   /* 10.24px - micro labels */
+  --text-sm:    0.8rem;    /* 12.8px  - captions, helper text */
+  --text-base:  1rem;      /* 16px    - body text */
+  --text-md:    1.25rem;   /* 20px    - emphasized body */
+  --text-lg:    1.563rem;  /* 25px    - section headings */
+  --text-xl:    1.953rem;  /* 31.25px - card titles */
+  --text-2xl:   2.441rem;  /* 39px    - page titles */
+  --text-3xl:   3.052rem;  /* 48.8px  - hero numbers */
+  --text-4xl:   3.815rem;  /* 61px    - display */
+}
+
+/* Line Heights */
+:root {
+  --leading-tight:   1.2;   /* Display text, large numbers */
+  --leading-snug:    1.375; /* Headings */
+  --leading-normal:  1.5;   /* Body text */
+  --leading-relaxed: 1.625; /* Long-form content */
+}
+
+/* Letter Spacing */
+:root {
+  --tracking-tighter: -0.03em;  /* Large display text */
+  --tracking-tight:   -0.015em; /* Headings */
+  --tracking-normal:  0;        /* Body text */
+  --tracking-wide:    0.025em;  /* Small caps, labels */
+  --tracking-wider:   0.05em;   /* Uppercase labels */
+  --tracking-widest:  0.1em;    /* Micro uppercase */
+}
+
+/* Base Typography */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  font-weight: 400;
+}
+
+/* Headings - Serif Display */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tighter);
+}
+
+h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+h4 {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+/* Body Text Variants */
+.text-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+.text-body-emphasis {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.text-caption {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-tertiary);
+}
+
+.text-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.text-micro {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* Financial Numbers - Monospace Tabular */
 .font-mono-tabular {
-  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
   font-weight: 500;
+  line-height: var(--leading-tight);
+}
+
+/* Display Numbers - Large financial stats */
+.text-display-number {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  :root {
+    --text-3xl: 2.441rem;  /* 39px on mobile */
+    --text-2xl: 1.953rem;  /* 31.25px on mobile */
+  }
 }
 
 /* Gold metallic effect */

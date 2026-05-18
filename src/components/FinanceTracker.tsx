@@ -331,8 +331,8 @@ export default function FinanceTracker() {
                 background: 'var(--bg-secondary)',
                 borderColor: 'var(--border-default)'
               }}>
-                <h3 className="font-semibold mb-3 text-sm tracking-wider" style={{ color: 'var(--text-primary)' }}>
-                  RECENT TRANSACTIONS
+                <h3 className="text-label mb-3">
+                  Recent Transactions
                 </h3>
                 <TransactionList
                   transactions={transactions.slice(0, 5)}
@@ -428,7 +428,7 @@ export default function FinanceTracker() {
             }}
           >
             <Home size={22} strokeWidth={activeTab === "home" ? 2.5 : 2} />
-            <span className="text-[10px] font-medium tracking-wide">HOME</span>
+            <span className="text-micro">Home</span>
           </button>
           
           {/* Chart */}
@@ -440,7 +440,7 @@ export default function FinanceTracker() {
             }}
           >
             <BarChart3 size={22} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
-            <span className="text-[10px] font-medium tracking-wide">CHART</span>
+            <span className="text-micro">Chart</span>
           </button>
           
           {/* List */}
@@ -452,7 +452,7 @@ export default function FinanceTracker() {
             }}
           >
             <List size={22} strokeWidth={activeTab === "list" ? 2.5 : 2} />
-            <span className="text-[10px] font-medium tracking-wide">LIST</span>
+            <span className="text-micro">List</span>
           </button>
           
           {/* Add */}
@@ -467,7 +467,7 @@ export default function FinanceTracker() {
             }}
           >
             <PlusCircle size={22} strokeWidth={2.5} />
-            <span className="text-[10px] font-semibold tracking-wide">ADD</span>
+            <span className="text-micro" style={{ fontWeight: 600 }}>Add</span>
           </button>
         </div>
       </nav>

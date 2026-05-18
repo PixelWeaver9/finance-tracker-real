@@ -60,9 +60,9 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg">
-          <p className="text-xs text-gray-500 font-medium mb-1">{payload[0].name}</p>
-          <p className="text-sm text-gray-900 font-bold">{formatCurrency(payload[0].value)}</p>
+        <div className="card-luxury p-3">
+          <p className="text-caption mb-1">{payload[0].name}</p>
+          <p className="text-body-emphasis font-mono-tabular">{formatCurrency(payload[0].value)}</p>
         </div>
       );
     }
@@ -70,28 +70,41 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-5 md:p-6 flex flex-col h-[400px]">
+    <div className="card-luxury p-5 md:p-6 flex flex-col h-[400px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-bold text-gray-900">Category Distribution</h2>
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg">
+        <h2 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'var(--text-lg)',
+          fontWeight: 600,
+          color: 'var(--text-primary)'
+        }}>
+          Category Distribution
+        </h2>
+        <div className="flex gap-2 p-1 rounded-lg" style={{ background: 'var(--bg-tertiary)' }}>
           <button
             onClick={() => setPeriod("weekly")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              period === "weekly"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+            className="px-3 py-1.5 rounded-md transition-all"
+            style={{
+              background: period === "weekly" ? 'var(--bg-elevated)' : 'transparent',
+              color: period === "weekly" ? 'var(--text-primary)' : 'var(--text-tertiary)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 500,
+              boxShadow: period === "weekly" ? 'var(--shadow-sm)' : 'none'
+            }}
           >
             7 Days
           </button>
           <button
             onClick={() => setPeriod("monthly")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              period === "monthly"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+            className="px-3 py-1.5 rounded-md transition-all"
+            style={{
+              background: period === "monthly" ? 'var(--bg-elevated)' : 'transparent',
+              color: period === "monthly" ? 'var(--text-primary)' : 'var(--text-tertiary)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 500,
+              boxShadow: period === "monthly" ? 'var(--shadow-sm)' : 'none'
+            }}
           >
             30 Days
           </button>
@@ -102,13 +115,13 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
       <div className="flex-1 flex items-center justify-center">
         {loading ? (
           <div className="flex flex-col items-center gap-3">
-            <RefreshCw size={28} className="animate-spin text-gray-400" />
-            <p className="text-sm text-gray-500">Loading...</p>
+            <RefreshCw size={28} className="animate-spin" style={{ color: 'var(--text-tertiary)' }} />
+            <p className="text-caption">Loading...</p>
           </div>
         ) : data.length === 0 ? (
           <div className="text-center">
-            <p className="text-gray-600 font-medium">No expenses yet</p>
-            <p className="text-sm text-gray-400 mt-1">in this period</p>
+            <p className="text-body-emphasis">No expenses yet</p>
+            <p className="text-caption mt-1">in this period</p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
@@ -136,7 +149,7 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
                 verticalAlign="bottom" 
                 height={36}
                 iconType="circle"
-                formatter={(value) => <span className="text-gray-700 text-xs font-medium ml-1">{value}</span>}
+                formatter={(value) => <span className="text-caption font-medium ml-1">{value}</span>}
               />
             </PieChart>
           </ResponsiveContainer>
