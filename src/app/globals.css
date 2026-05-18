@@ -259,3 +259,187 @@ input[type="number"] {
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
+
+/* ============================================
+   ENHANCED ANIMATIONS - Purposeful Motion
+   ============================================ */
+
+/* Number counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-count-up {
+  animation: countUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Floating particles */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+  25% { transform: translate(10px, -10px) rotate(90deg); opacity: 0.5; }
+  50% { transform: translate(-5px, -20px) rotate(180deg); opacity: 0.3; }
+  75% { transform: translate(-15px, -10px) rotate(270deg); opacity: 0.5; }
+}
+
+.animate-float {
+  animation: float 20s ease-in-out infinite;
+}
+
+.animate-float-delay-1 { animation-delay: -5s; }
+.animate-float-delay-2 { animation-delay: -10s; }
+.animate-float-delay-3 { animation-delay: -15s; }
+
+/* Button press effect */
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+
+.animate-button-press {
+  animation: buttonPress 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glow pulse for interactive elements */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px oklch(70% 0.18 210 / 0.2); }
+  50% { box-shadow: 0 0 30px oklch(70% 0.18 210 / 0.4); }
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Slide in from bottom (for modals) */
+@keyframes slideInBottom {
+  from { 
+    opacity: 0; 
+    transform: translateY(100px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+.animate-slide-in-bottom {
+  animation: slideInBottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Scale in (for cards appearing) */
+@keyframes scaleIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Rotate in (for icons) */
+@keyframes rotateIn {
+  from { 
+    opacity: 0; 
+    transform: rotate(-180deg) scale(0.5); 
+  }
+  to { 
+    opacity: 1; 
+    transform: rotate(0deg) scale(1); 
+  }
+}
+
+.animate-rotate-in {
+  animation: rotateIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Typing indicator */
+@keyframes typing {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.animate-typing {
+  animation: typing 1.4s ease-in-out infinite;
+}
+
+.animate-typing-delay-1 { animation-delay: 0.2s; }
+.animate-typing-delay-2 { animation-delay: 0.4s; }
+
+/* Border glow animation */
+@keyframes borderGlow {
+  0%, 100% { 
+    border-color: var(--border-default);
+    box-shadow: 0 0 0 oklch(70% 0.18 210 / 0);
+  }
+  50% { 
+    border-color: var(--cyan-500);
+    box-shadow: 0 0 20px oklch(70% 0.18 210 / 0.3);
+  }
+}
+
+.animate-border-glow {
+  animation: borderGlow 2s ease-in-out infinite;
+}
+
+/* Ripple effect */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.animate-ripple {
+  animation: ripple 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Micro-interaction: hover lift with glow */
+.hover-lift-glow {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan);
+}
+
+/* Micro-interaction: button scale */
+.hover-scale {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.hover-scale:active {
+  transform: scale(0.98);
+}
+
+/* Page transition fade */
+@keyframes pageTransition {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-page-transition {
+  animation: pageTransition 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Stagger delays for sequential animations */
+.animate-delay-50 { animation-delay: 50ms; }
+.animate-delay-150 { animation-delay: 150ms; }
+.animate-delay-250 { animation-delay: 250ms; }
+.animate-delay-350 { animation-delay: 350ms; }
+.animate-delay-450 { animation-delay: 450ms; }
