@@ -1,6 +1,7 @@
 "use client";
 
-import { Brain, CheckCircle, AlertCircle, Sparkles } from "lucide-react";
+import { RefreshCw, Sparkles, HelpCircle } from "lucide-react";
+import { useState } from "react";
 
 interface MLPreviewProps {
   mlLoading: boolean;
@@ -8,49 +9,55 @@ interface MLPreviewProps {
 }
 
 export default function MLPreview({ mlLoading, mlStatus }: MLPreviewProps) {
+  const [showHelp, setShowHelp] = useState(false);
+
+  if (mlLoading) {
+    return (
+      <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
+        <RefreshCw size={12} className="animate-spin" />
+        <span>AI is analyzing...</span>
+      </div>
+    );
+  }
+
+  if (!mlStatus) return null;
+
+  const confidencePercent = Math.round(mlStatus.confidence * 100);
+  const confidenceColor =
+    confidencePercent >= 80
+      ? "text-green-600 bg-green-50 border-green-200"
+      : confidencePercent >= 60
+      ? "text-amber-600 bg-amber-50 border-amber-200"
+      : "text-gray-600 bg-gray-50 border-gray-200";
+
   return (
-    <div
-      className={`mt-2 px-3 py-2.5 rounded-lg border flex items-center gap-2 transition-all ${
-        mlLoading
-          ? "bg-zinc-900 border-zinc-800"
-          : mlStatus
-          ? mlStatus.confidence >= 0.5
-            ? "bg-emerald-500/10 border-emerald-500/20"
-            : "bg-yellow-500/10 border-yellow-500/20"
-          : "bg-zinc-900 border-zinc-800"
-      }`}
-    >
-      {mlLoading ? (
-        <>
-          <Brain size={14} className="text-blue-500 animate-pulse flex-shrink-0" />
-          <span className="text-zinc-400 text-xs">AI mendeteksi...</span>
-        </>
-      ) : mlStatus ? (
-        <>
-          {mlStatus.confidence >= 0.5 ? (
-            <CheckCircle size={14} className="text-emerald-500 flex-shrink-0" />
-          ) : (
-            <AlertCircle size={14} className="text-yellow-500 flex-shrink-0" />
-          )}
-          <div>
-            <span className="text-zinc-400 text-xs">Kategori: </span>
-            <span
-              className={`font-semibold text-xs ${
-                mlStatus.confidence >= 0.5 ? "text-emerald-400" : "text-yellow-400"
-              }`}
-            >
-              {mlStatus.category}
-            </span>
-            <span className="text-zinc-600 text-[10px] ml-1">
-              ({Math.round(mlStatus.confidence * 100)}%)
-            </span>
-          </div>
-        </>
-      ) : (
-        <>
-          <Sparkles size={14} className="text-zinc-600 flex-shrink-0" />
-          <span className="text-zinc-500 text-xs">Ketik deskripsi untuk auto-kategori</span>
-        </>
+    <div className="mt-2 space-y-2">
+      <div className={`flex items-center gap-2 text-xs px-3 py-2 rounded-lg border ${confidenceColor}`}>
+        <Sparkles size={14} />
+        <span className="font-medium">
+          AI suggests: <strong>{mlStatus.category}</strong> ({confidencePercent}% confidence)
+        </span>
+        <button
+          type="button"
+          onClick={() => setShowHelp(!showHelp)}
+          className="ml-auto hover:opacity-70 transition-opacity"
+        >
+          <HelpCircle size={14} />
+        </button>
+      </div>
+      
+      {showHelp && (
+        <div className="text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <p className="font-medium mb-1">Understanding AI Confidence:</p>
+          <ul className="space-y-1 ml-4 list-disc">
+            <li><strong>80-100%:</strong> High confidence. AI is very sure about this category.</li>
+            <li><strong>60-79%:</strong> Medium confidence. AI thinks this is likely correct.</li>
+            <li><strong>Below 60%:</strong> Low confidence. You may want to verify or change the category.</li>
+          </ul>
+          <p className="mt-2 text-gray-500">
+            The AI learns from your transaction descriptions. More specific descriptions lead to better predictions.
+          </p>
+        </div>
       )}
     </div>
   );

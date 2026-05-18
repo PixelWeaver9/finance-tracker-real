@@ -45,21 +45,21 @@ export default function TransactionModal({
   if (!showModal) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-bold text-zinc-100">
-              {editingId ? "Edit Transaksi" : "Tambah Transaksi"}
+            <h2 className="text-xl font-bold text-gray-900">
+              {editingId ? "Edit Transaction" : "Add Transaction"}
             </h2>
-            <p className="text-zinc-500 text-xs mt-1 flex items-center gap-1.5">
-              <BrainCircuit size={12} /> Kategori dideteksi otomatis oleh AI
+            <p className="text-gray-500 text-xs mt-1 flex items-center gap-1.5">
+              <BrainCircuit size={12} /> AI will categorize automatically
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-zinc-800 rounded-lg transition-all text-zinc-500 hover:text-zinc-300"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-all text-gray-500 hover:text-gray-700"
           >
             <X size={20} />
           </button>
@@ -68,85 +68,85 @@ export default function TransactionModal({
         <div className="space-y-5">
           {/* Tipe Transaksi */}
           <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-2">
-              Tipe Transaksi
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Transaction Type
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, type: "expense" })}
-                className={`p-3 rounded-xl border transition-all text-sm font-medium flex flex-col items-center gap-1.5 ${
+                className={`p-3 rounded-lg border transition-all text-sm font-medium flex flex-col items-center gap-1.5 ${
                   formData.type === "expense"
-                    ? "border-rose-500 bg-rose-500/10 text-rose-500"
-                    : "border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-700"
+                    ? "border-red-500 bg-red-50 text-red-600"
+                    : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
                 }`}
               >
                 <TrendingDown size={20} />
-                Pengeluaran
+                Expense
               </button>
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, type: "income" })}
-                className={`p-3 rounded-xl border transition-all text-sm font-medium flex flex-col items-center gap-1.5 ${
+                className={`p-3 rounded-lg border transition-all text-sm font-medium flex flex-col items-center gap-1.5 ${
                   formData.type === "income"
-                    ? "border-emerald-500 bg-emerald-500/10 text-emerald-500"
-                    : "border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-700"
+                    ? "border-green-500 bg-green-50 text-green-600"
+                    : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
                 }`}
               >
                 <TrendingUp size={20} />
-                Pemasukan
+                Income
               </button>
             </div>
           </div>
 
           {/* Deskripsi */}
           <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               <div className="flex items-center gap-2">
                 <FileText size={16} />
-                Deskripsi Transaksi
+                Description
               </div>
             </label>
             <input
               type="text"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm"
-              placeholder="contoh: makan bakso, isi bensin, gaji bulanan..."
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+              placeholder="e.g., lunch at cafe, gas refill, monthly salary..."
             />
             <MLPreview mlLoading={mlLoading} mlStatus={mlStatus} />
           </div>
 
           {/* Jumlah */}
           <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               <div className="flex items-center gap-2">
                 <DollarSign size={16} />
-                Jumlah (IDR)
+                Amount (IDR)
               </div>
             </label>
             <input
               type="number"
               value={formData.amount}
               onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm"
-              placeholder="Masukkan jumlah"
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+              placeholder="Enter amount"
             />
           </div>
 
           {/* Tanggal */}
           <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               <div className="flex items-center gap-2">
                 <Calendar size={16} />
-                Tanggal
+                Date
               </div>
             </label>
             <input
               type="date"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
             />
           </div>
 
@@ -154,22 +154,22 @@ export default function TransactionModal({
           <div className="flex gap-3 pt-4">
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-3 border border-zinc-700 text-zinc-400 hover:text-zinc-200 rounded-xl hover:bg-zinc-800 transition-all text-sm font-medium"
+              className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium"
               disabled={loading}
             >
-              Batal
+              Cancel
             </button>
             <button
               onClick={onSubmit}
-              className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-all shadow-md shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm font-medium"
+              className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm font-medium"
               disabled={loading}
             >
               {loading ? (
                 <>
-                  <RefreshCw size={16} className="animate-spin" /> Menyimpan...
+                  <RefreshCw size={16} className="animate-spin" /> Saving...
                 </>
               ) : (
-                <>{editingId ? "Update" : "Simpan"}</>
+                <>{editingId ? "Update" : "Save"}</>
               )}
             </button>
           </div>

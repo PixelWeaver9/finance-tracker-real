@@ -32,7 +32,7 @@ export default function TransactionList({
     <Card className="flex-1 flex flex-col min-h-[500px] border-black/15">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <CardTitle className="text-2xl">Riwayat Transaksi</CardTitle>
+          <CardTitle className="text-2xl">Transaction History</CardTitle>
           <div className="flex gap-2">
             {(["all", "income", "expense"] as const).map((f) => (
               <Button
@@ -42,7 +42,7 @@ export default function TransactionList({
                 size="sm"
                 className="min-w-[90px]"
               >
-                {f === "all" ? "Semua" : f === "income" ? "Pemasukan" : "Pengeluaran"}
+                {f === "all" ? "All" : f === "income" ? "Income" : "Expense"}
               </Button>
             ))}
           </div>
@@ -52,17 +52,17 @@ export default function TransactionList({
       <CardContent className="flex-1 flex flex-col pt-0">
         {loading ? (
           <div className="text-center py-20 animate-fade-in">
-            <RefreshCw size={40} className="animate-spin text-black mx-auto mb-4" />
-            <p className="text-black/60 text-sm">Memuat data...</p>
+            <RefreshCw size={40} className="animate-spin text-gray-900 mx-auto mb-4" />
+            <p className="text-gray-600 text-sm">Loading transactions...</p>
           </div>
         ) : transactions.length === 0 ? (
           <div className="text-center py-20 flex flex-col items-center justify-center h-full animate-fade-in">
-            <div className="bg-black/5 backdrop-blur-sm w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-black/10">
-              <FileText size={32} className="text-black/40" />
+            <div className="bg-gray-50 w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-gray-200">
+              <FileText size={32} className="text-gray-400" />
             </div>
-            <p className="text-black font-semibold text-lg">Belum ada transaksi</p>
-            <p className="text-black/50 text-sm mt-2">
-              Klik tombol &quot;Tambah&quot; untuk memulai
+            <p className="text-gray-900 font-semibold text-lg">No transactions yet</p>
+            <p className="text-gray-500 text-sm mt-2">
+              Click &quot;Add Transaction&quot; to get started
             </p>
           </div>
         ) : (
@@ -86,9 +86,9 @@ export default function TransactionList({
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-6 pt-6 border-t border-black/10">
-                <p className="text-sm text-black/60 font-medium">
-                  Halaman <span className="text-black">{page}</span> dari <span className="text-black">{totalPages}</span>
+              <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
+                <p className="text-sm text-gray-600 font-medium">
+                  Page <span className="text-gray-900">{page}</span> of <span className="text-gray-900">{totalPages}</span>
                 </p>
                 <div className="flex gap-2">
                   <Button
@@ -98,7 +98,7 @@ export default function TransactionList({
                     disabled={page === 1}
                   >
                     <ChevronLeft size={16} />
-                    Prev
+                    Previous
                   </Button>
                   <Button
                     variant="outline"

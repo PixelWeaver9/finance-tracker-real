@@ -8,6 +8,7 @@ import ExpenseChart from "./ExpenseChart";
 import TransactionModal from "./TransactionModal";
 import { Transaction } from "./TransactionItem";
 import { Button } from "./ui/button";
+import { ToastContainer, ToastType } from "./ui/toast";
 
 interface FormData {
   type: string;
@@ -37,6 +38,18 @@ export default function FinanceTracker() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [activeTab, setActiveTab] = useState<"home" | "chart" | "list">("home");
+  const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: ToastType }>>([]);
+  const [undoStack, setUndoStack] = useState<Array<{ transaction: Transaction; action: "delete" }>>([]);
+
+  // ── Toast Helper ──
+  const showToast = useCallback((message: string, type: ToastType) => {
+    const id = Math.random().toString(36).substring(7);
+    setToasts((prev) => [...prev, { id, message, type }]);
+  }, []);
+
+  const removeToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   // ── Fetch Stats ──
   const fetchStats = useCallback(async () => {
@@ -46,8 +59,9 @@ export default function FinanceTracker() {
       if (result.success) setStats(result.data);
     } catch (error) {
       console.error("Error fetching stats:", error);
+      showToast("Failed to load statistics. Please refresh the page.", "error");
     }
-  }, []);
+  }, [showToast]);
 
   // ── Fetch Transactions ──
   const fetchTransactions = useCallback(async () => {
@@ -58,12 +72,15 @@ export default function FinanceTracker() {
       if (result.success) {
         setTransactions(result.data);
         setTotalPages(result.totalPages || 1);
+      } else {
+        showToast("Failed to load transactions. Please try again.", "error");
       }
     } catch (error) {
       console.error("Error fetching transactions:", error);
+      showToast("Network error. Check your connection and try again.", "error");
     }
     setLoading(false);
-  }, [filter, page]);
+  }, [filter, page, showToast]);
 
   useEffect(() => {
     fetchTransactions();
@@ -115,7 +132,7 @@ export default function FinanceTracker() {
   // ── Submit (Create / Update) ──
   const handleSubmit = async () => {
     if (!formData.amount || !formData.description || !formData.date) {
-      alert("Jumlah, deskripsi, dan tanggal harus diisi!");
+      showToast("Please fill in amount, description, and date.", "error");
       return;
     }
 
@@ -135,42 +152,89 @@ export default function FinanceTracker() {
       if (result.success) {
         const mlInfo =
           result.confidence > 0
-            ? `\nKategori AI: ${result.category} (${Math.round(result.confidence * 100)}%)`
+            ? ` AI categorized as ${result.category} (${Math.round(result.confidence * 100)}% confidence).`
             : "";
-        alert(
-          (editingId ? "Transaksi berhasil diupdate!" : "Transaksi berhasil ditambahkan!") +
-            mlInfo
+        showToast(
+          (editingId ? "Transaction updated successfully." : "Transaction added successfully.") +
+            mlInfo,
+          "success"
         );
         resetForm();
         setRefreshTrigger((prev) => prev + 1);
         fetchTransactions();
         fetchStats();
       } else {
-        alert("Gagal menyimpan: " + result.message);
+        showToast(`Failed to save: ${result.message}`, "error");
       }
     } catch (error) {
       console.error("Error saving transaction:", error);
-      alert("Terjadi kesalahan saat menyimpan data!");
+      showToast("Network error. Check your connection and try again.", "error");
     }
     setLoading(false);
   };
 
-  // ── Delete ──
+  // ── Delete with Undo ──
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Yakin ingin menghapus transaksi ini?")) return;
+    const transaction = transactions.find((t) => t.id === id);
+    if (!transaction) return;
+
     setLoading(true);
     try {
       const response = await fetch(`/api/transactions/${id}`, { method: "DELETE" });
       const result = await response.json();
       if (result.success) {
+        // Add to undo stack
+        setUndoStack((prev) => [...prev, { transaction, action: "delete" }]);
+        
+        showToast("Transaction deleted. Undo available for 10 seconds.", "info");
+        
+        // Auto-clear undo after 10 seconds
+        setTimeout(() => {
+          setUndoStack((prev) => prev.filter((item) => item.transaction.id !== id));
+        }, 10000);
+
         setRefreshTrigger((prev) => prev + 1);
         fetchTransactions();
         fetchStats();
       } else {
-        alert("Gagal menghapus: " + result.message);
+        showToast(`Failed to delete: ${result.message}`, "error");
       }
     } catch {
-      alert("Terjadi kesalahan saat menghapus data!");
+      showToast("Network error. Check your connection and try again.", "error");
+    }
+    setLoading(false);
+  };
+
+  // ── Undo Delete ──
+  const handleUndo = async () => {
+    const lastAction = undoStack[undoStack.length - 1];
+    if (!lastAction) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: lastAction.transaction.type,
+          amount: String(lastAction.transaction.amount),
+          description: lastAction.transaction.description,
+          date: lastAction.transaction.date,
+        }),
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        showToast("Transaction restored successfully.", "success");
+        setUndoStack((prev) => prev.slice(0, -1));
+        setRefreshTrigger((prev) => prev + 1);
+        fetchTransactions();
+        fetchStats();
+      } else {
+        showToast("Failed to restore transaction.", "error");
+      }
+    } catch {
+      showToast("Network error. Failed to restore transaction.", "error");
     }
     setLoading(false);
   };
@@ -198,30 +262,41 @@ export default function FinanceTracker() {
 
   return (
     <>
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      
       <div className="w-full max-w-6xl mx-auto px-4 pb-20 md:pb-10">
         {/* Desktop Only: Action Bar */}
-        <div className="hidden md:flex items-center justify-end gap-2 mb-6 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setRefreshTrigger((prev) => prev + 1);
-              fetchTransactions();
-              fetchStats();
-            }}
-            disabled={loading}
-          >
-            <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
-            Refresh
-          </Button>
-          <Button
-            onClick={() => {
-              resetForm();
-              setShowModal(true);
-            }}
-          >
-            <PlusCircle size={20} />
-            Tambah
-          </Button>
+        <div className="hidden md:flex items-center justify-between gap-2 mb-6 mt-4">
+          <div>
+            {undoStack.length > 0 && (
+              <Button variant="outline" onClick={handleUndo} disabled={loading}>
+                Undo Delete
+              </Button>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setRefreshTrigger((prev) => prev + 1);
+                fetchTransactions();
+                fetchStats();
+              }}
+              disabled={loading}
+            >
+              <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+              Refresh
+            </Button>
+            <Button
+              onClick={() => {
+                resetForm();
+                setShowModal(true);
+              }}
+            >
+              <PlusCircle size={20} />
+              Add Transaction
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Only: Tab Content */}
@@ -230,7 +305,7 @@ export default function FinanceTracker() {
             <div className="space-y-4">
               <StatsCards stats={stats} />
               <div className="bg-white rounded-lg border border-gray-200 p-4">
-                <h3 className="font-semibold text-gray-900 mb-3">Transaksi Terbaru</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">Recent Transactions</h3>
                 <TransactionList
                   transactions={transactions.slice(0, 5)}
                   filter={filter}
