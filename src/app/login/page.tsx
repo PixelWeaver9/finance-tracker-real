@@ -40,7 +40,7 @@ export default function LoginPage() {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden"
+      className="h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{ background: 'var(--bg-primary)' }}
     >
       {/* Scan line effect */}
@@ -65,7 +65,7 @@ export default function LoginPage() {
         ))}
       </div>
 
-      <div className="w-full max-w-md relative z-10 animate-page-transition">
+      <div className="w-full max-w-md relative z-10 animate-page-transition max-h-screen overflow-y-auto py-4">
         {/* Logo */}
         <div className="text-center mb-8 animate-scale-in">
           <div className="flex items-center justify-center gap-2 mb-3">
