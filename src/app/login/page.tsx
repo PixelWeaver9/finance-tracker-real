@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Zap, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Crown, ArrowRight } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,184 +43,156 @@ export default function LoginPage() {
       className="h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{ background: 'var(--bg-primary)' }}
     >
-      {/* Scan line effect */}
-      <div className="scan-line" />
-      
-      {/* Grid background */}
-      <div className="fixed inset-0 grid-bg pointer-events-none" style={{ opacity: 0.3 }} />
-      
-      {/* Floating particles */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full animate-float animate-float-delay-${i % 3 + 1}`}
-            style={{
-              background: 'var(--cyan-500)',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              opacity: 0.3,
-            }}
-          />
-        ))}
-      </div>
+      {/* Subtle gradient overlay */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: 'radial-gradient(circle at top right, oklch(70% 0.12 85 / 0.1), transparent 50%)'
+        }}
+      />
 
-      <div className="w-full max-w-md relative z-10 animate-page-transition max-h-screen overflow-y-auto py-4">
+      <div className="w-full max-w-md relative z-10 animate-fade-in">
         {/* Logo */}
         <div className="text-center mb-8 animate-scale-in">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Zap 
-              size={32} 
-              className="glow-cyan animate-pulse-glow animate-rotate-in" 
-              style={{ color: 'var(--cyan-500)' }}
-              strokeWidth={2.5}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Crown 
+              size={40} 
+              className="animate-subtle-glow" 
+              style={{ color: 'var(--gold-500)' }}
+              strokeWidth={1.5}
+              fill="var(--gold-600)"
             />
-            <h1 className="text-4xl font-bold tracking-tight">
-              <span style={{ color: 'var(--text-primary)' }}>FINANCE</span>
-              <span style={{ color: 'var(--cyan-500)' }} className="font-mono-tabular">.AI</span>
-            </h1>
           </div>
-          <p className="text-sm font-medium tracking-wide" style={{ color: 'var(--text-tertiary)' }}>
-            SIGN IN TO YOUR ACCOUNT
+          <h1 className="text-4xl font-serif font-semibold tracking-tight mb-2">
+            <span style={{ color: 'var(--text-primary)' }}>Finance</span>
+            <span style={{ color: 'var(--gold-500)' }} className="font-serif italic"> Royale</span>
+          </h1>
+          <p className="text-sm font-medium" style={{ color: 'var(--text-tertiary)' }}>
+            Welcome back to your financial kingdom
           </p>
         </div>
 
         {/* Card */}
         <div 
-          className="rounded-lg border p-8 animate-slide-in-up animate-delay-100 hover-lift-glow"
-          style={{
-            background: 'var(--bg-secondary)',
-            borderColor: 'var(--border-default)',
-          }}
+          className="card-luxury accent-gold animate-slide-up animate-delay-200"
         >
-          {/* Error */}
-          {error && (
-            <div 
-              className="mb-6 p-3 rounded-lg text-sm font-medium animate-slide-in-bottom"
-              style={{
-                background: 'var(--neon-red-dim)',
-                borderColor: 'var(--neon-red)',
-                color: 'var(--neon-red)',
-                border: '1px solid',
-              }}
-            >
-              {error}
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email */}
-            <div className="animate-slide-in-up animate-delay-200">
-              <label 
-                className="block text-xs font-semibold tracking-wider mb-2"
-                style={{ color: 'var(--text-tertiary)' }}
-              >
-                EMAIL ADDRESS
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2"
+          <div className="p-8">
+            {/* Error */}
+            {error && (
+              <div 
+                className="mb-6 p-4 rounded-lg text-sm font-medium animate-scale-in"
                 style={{
-                  background: 'var(--bg-tertiary)',
-                  borderColor: 'var(--border-default)',
-                  color: 'var(--text-primary)',
+                  background: 'oklch(60% 0.18 25 / 0.1)',
+                  borderLeft: '3px solid var(--error-red)',
+                  color: 'var(--error-red)',
                 }}
-                placeholder="your@email.com"
-                required
-              />
-            </div>
-
-            {/* Password */}
-            <div className="animate-slide-in-up animate-delay-250">
-              <label 
-                className="block text-xs font-semibold tracking-wider mb-2"
-                style={{ color: 'var(--text-tertiary)' }}
               >
-                PASSWORD
-              </label>
-              <div className="relative">
+                {error}
+              </div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email */}
+              <div>
+                <label 
+                  className="block text-sm font-semibold mb-2"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Email Address
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-11 border rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none"
                   style={{
                     background: 'var(--bg-tertiary)',
                     borderColor: 'var(--border-default)',
                     color: 'var(--text-primary)',
                   }}
-                  placeholder="Enter your password"
+                  placeholder="your@email.com"
                   required
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 transition-all hover:scale-110"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
-            </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-lg text-sm font-semibold tracking-wide transition-all hover-scale glow-cyan animate-slide-in-up animate-delay-300 flex items-center justify-center gap-2"
-              style={{
-                background: 'var(--cyan-600)',
-                color: 'var(--bg-primary)',
-                border: '1px solid var(--cyan-500)',
-              }}
-            >
-              {loading ? (
-                <>
-                  <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full animate-typing" style={{ background: 'var(--bg-primary)' }} />
-                    <span className="w-1.5 h-1.5 rounded-full animate-typing animate-typing-delay-1" style={{ background: 'var(--bg-primary)' }} />
-                    <span className="w-1.5 h-1.5 rounded-full animate-typing animate-typing-delay-2" style={{ background: 'var(--bg-primary)' }} />
-                  </div>
-                  <span>AUTHENTICATING</span>
-                </>
-              ) : (
-                <>
-                  <span>SIGN IN</span>
-                  <ArrowRight size={16} strokeWidth={2.5} />
-                </>
-              )}
-            </button>
-          </form>
+              {/* Password */}
+              <div>
+                <label 
+                  className="block text-sm font-semibold mb-2"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 pr-12 rounded-lg border transition-all focus:outline-none"
+                    style={{
+                      background: 'var(--bg-tertiary)',
+                      borderColor: 'var(--border-default)',
+                      color: 'var(--text-primary)',
+                    }}
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 transition-all hover:scale-110"
+                    style={{ color: 'var(--text-tertiary)' }}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
 
-          {/* Divider */}
-          <div className="flex items-center gap-4 my-6 animate-fade-in animate-delay-350">
-            <div className="flex-1 h-px" style={{ background: 'var(--border-subtle)' }} />
-            <span className="text-xs font-medium tracking-wider" style={{ color: 'var(--text-disabled)' }}>OR</span>
-            <div className="flex-1 h-px" style={{ background: 'var(--border-subtle)' }} />
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 rounded-lg text-sm font-semibold transition-all hover-scale shadow-gold flex items-center justify-center gap-2 mt-6"
+                style={{
+                  background: 'var(--gradient-gold)',
+                  color: 'var(--bg-primary)',
+                }}
+              >
+                {loading ? (
+                  <span>Signing in...</span>
+                ) : (
+                  <>
+                    <span>Sign In</span>
+                    <ArrowRight size={18} strokeWidth={2.5} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="divider-luxury my-6" />
+
+            {/* Register Link */}
+            <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
+              Don't have an account?{" "}
+              <Link
+                href="/register"
+                className="font-semibold transition-all hover:underline"
+                style={{ color: 'var(--gold-500)' }}
+              >
+                Create account
+              </Link>
+            </p>
           </div>
-
-          {/* Register Link */}
-          <p className="text-center text-sm animate-fade-in animate-delay-400" style={{ color: 'var(--text-secondary)' }}>
-            Don't have an account?{" "}
-            <Link
-              href="/register"
-              className="font-semibold transition-all hover:underline"
-              style={{ color: 'var(--cyan-500)' }}
-            >
-              Create account
-            </Link>
-          </p>
         </div>
 
         {/* Footer */}
         <p 
-          className="text-center text-xs font-medium tracking-wider mt-8 animate-fade-in animate-delay-450"
+          className="text-center text-xs font-medium mt-8 animate-fade-in animate-delay-400"
           style={{ color: 'var(--text-disabled)' }}
         >
-          FINANCE TRACKER · 2026
+          Finance Royale · Premium Financial Management
         </p>
       </div>
     </div>
