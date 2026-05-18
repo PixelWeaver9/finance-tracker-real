@@ -24,16 +24,10 @@ export default async function RootLayout({
 
   return (
     <html lang="id" className={inter.variable}>
-      <body className="bg-white text-black min-h-screen flex flex-col font-sans selection:bg-black/10 antialiased relative overflow-x-hidden">
-        {/* Subtle grid pattern */}
-        <div className="fixed inset-0 -z-10 grid-pattern opacity-30" />
-        
-        {/* Subtle gradient overlay */}
-        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-gray-50 via-white to-gray-50" />
-        
+      <body>
         <SessionProvider session={session}>
           {session && <Navbar />}
-          <main className="pt-6">{children}</main>
+          <main>{children}</main>
         </SessionProvider>
       </body>
     </html>
