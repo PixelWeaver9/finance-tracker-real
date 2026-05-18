@@ -264,38 +264,61 @@ export default function FinanceTracker() {
     <>
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       
-      <div className="w-full max-w-6xl mx-auto px-4 pb-20 md:pb-10">
+      {/* Grid background */}
+      <div className="fixed inset-0 grid-bg pointer-events-none" style={{ opacity: 0.4 }} />
+      
+      <div className="relative w-full max-w-6xl mx-auto px-4 pb-20 md:pb-10">
         {/* Desktop Only: Action Bar */}
         <div className="hidden md:flex items-center justify-between gap-2 mb-6 mt-4">
           <div>
             {undoStack.length > 0 && (
-              <Button variant="outline" onClick={handleUndo} disabled={loading}>
+              <button
+                onClick={handleUndo}
+                disabled={loading}
+                className="px-4 py-2 rounded-lg border font-medium text-sm transition-all hover:border-opacity-100 glow-cyan"
+                style={{
+                  background: 'var(--bg-secondary)',
+                  borderColor: 'var(--cyan-600)',
+                  color: 'var(--cyan-500)'
+                }}
+              >
                 Undo Delete
-              </Button>
+              </button>
             )}
           </div>
           <div className="flex gap-2">
-            <Button
-              variant="outline"
+            <button
               onClick={() => {
                 setRefreshTrigger((prev) => prev + 1);
                 fetchTransactions();
                 fetchStats();
               }}
               disabled={loading}
+              className="px-4 py-2 rounded-lg border font-medium text-sm transition-all hover:border-opacity-100 flex items-center gap-2"
+              style={{
+                background: 'var(--bg-secondary)',
+                borderColor: 'var(--border-default)',
+                color: 'var(--text-secondary)'
+              }}
             >
               <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
               Refresh
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => {
                 resetForm();
                 setShowModal(true);
               }}
+              className="px-4 py-2 rounded-lg border font-medium text-sm transition-all glow-cyan flex items-center gap-2"
+              style={{
+                background: 'var(--cyan-600)',
+                borderColor: 'var(--cyan-500)',
+                color: 'var(--bg-primary)'
+              }}
             >
               <PlusCircle size={20} />
               Add Transaction
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -304,8 +327,13 @@ export default function FinanceTracker() {
           {activeTab === "home" && (
             <div className="space-y-4">
               <StatsCards stats={stats} />
-              <div className="bg-white rounded-lg border border-gray-200 p-4">
-                <h3 className="font-semibold text-gray-900 mb-3">Recent Transactions</h3>
+              <div className="rounded-lg border p-4" style={{
+                background: 'var(--bg-secondary)',
+                borderColor: 'var(--border-default)'
+              }}>
+                <h3 className="font-semibold mb-3 text-sm tracking-wider" style={{ color: 'var(--text-primary)' }}>
+                  RECENT TRANSACTIONS
+                </h3>
                 <TransactionList
                   transactions={transactions.slice(0, 5)}
                   filter={filter}
@@ -382,46 +410,49 @@ export default function FinanceTracker() {
         />
       </div>
 
-      {/* Mobile Only: Bottom Navigation - Clean & Minimal */}
-      <nav className="block md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-        <div className="grid grid-cols-4 h-14">
+      {/* Mobile Only: Bottom Navigation - Futuristic */}
+      <nav 
+        className="block md:hidden fixed bottom-0 left-0 right-0 border-t backdrop-blur-futuristic z-50"
+        style={{
+          background: 'oklch(12% 0.015 210 / 0.95)',
+          borderColor: 'var(--border-default)'
+        }}
+      >
+        <div className="grid grid-cols-4 h-16">
           {/* Home */}
           <button
             onClick={() => setActiveTab("home")}
-            className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
-              activeTab === "home"
-                ? "text-blue-600"
-                : "text-gray-400 hover:text-gray-600"
-            }`}
+            className="flex flex-col items-center justify-center gap-1 transition-all"
+            style={{
+              color: activeTab === "home" ? "var(--cyan-500)" : "var(--text-tertiary)"
+            }}
           >
-            <Home size={20} strokeWidth={activeTab === "home" ? 2.5 : 2} />
-            <span className="text-[10px] font-medium">Home</span>
+            <Home size={22} strokeWidth={activeTab === "home" ? 2.5 : 2} />
+            <span className="text-[10px] font-medium tracking-wide">HOME</span>
           </button>
           
           {/* Chart */}
           <button
             onClick={() => setActiveTab("chart")}
-            className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
-              activeTab === "chart"
-                ? "text-blue-600"
-                : "text-gray-400 hover:text-gray-600"
-            }`}
+            className="flex flex-col items-center justify-center gap-1 transition-all"
+            style={{
+              color: activeTab === "chart" ? "var(--cyan-500)" : "var(--text-tertiary)"
+            }}
           >
-            <BarChart3 size={20} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
-            <span className="text-[10px] font-medium">Chart</span>
+            <BarChart3 size={22} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
+            <span className="text-[10px] font-medium tracking-wide">CHART</span>
           </button>
           
           {/* List */}
           <button
             onClick={() => setActiveTab("list")}
-            className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
-              activeTab === "list"
-                ? "text-blue-600"
-                : "text-gray-400 hover:text-gray-600"
-            }`}
+            className="flex flex-col items-center justify-center gap-1 transition-all"
+            style={{
+              color: activeTab === "list" ? "var(--cyan-500)" : "var(--text-tertiary)"
+            }}
           >
-            <List size={20} strokeWidth={activeTab === "list" ? 2.5 : 2} />
-            <span className="text-[10px] font-medium">List</span>
+            <List size={22} strokeWidth={activeTab === "list" ? 2.5 : 2} />
+            <span className="text-[10px] font-medium tracking-wide">LIST</span>
           </button>
           
           {/* Add */}
@@ -430,10 +461,13 @@ export default function FinanceTracker() {
               resetForm();
               setShowModal(true);
             }}
-            className="flex flex-col items-center justify-center gap-0.5 text-blue-600 hover:text-blue-700 transition-colors"
+            className="flex flex-col items-center justify-center gap-1 transition-all glow-cyan"
+            style={{
+              color: "var(--cyan-500)"
+            }}
           >
-            <PlusCircle size={20} strokeWidth={2.5} />
-            <span className="text-[10px] font-semibold">Add</span>
+            <PlusCircle size={22} strokeWidth={2.5} />
+            <span className="text-[10px] font-semibold tracking-wide">ADD</span>
           </button>
         </div>
       </nav>

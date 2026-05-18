@@ -1,84 +1,69 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { LogOut, Menu, X } from "lucide-react";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { LogOut, Zap } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   const { data: session } = useSession();
-  const [showMenu, setShowMenu] = useState(false);
-  const pathname = usePathname();
 
-  // Hide navbar on auth pages
-  if (pathname === "/login" || pathname === "/register") return null;
+  if (!session) return null;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-      <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-        {/* Logo - Text Only, Clean */}
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
-            Finance<span className="text-blue-600">.</span>
-          </h1>
+    <>
+      {/* Scan line effect */}
+      <div className="scan-line" />
+      
+      <nav className="sticky top-0 z-40 border-b backdrop-blur-futuristic" 
+           style={{ 
+             background: 'oklch(12% 0.015 210 / 0.8)',
+             borderColor: 'var(--border-default)'
+           }}>
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Logo - Futuristic */}
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Zap 
+                size={24} 
+                className="glow-cyan animate-pulse-glow" 
+                style={{ color: 'var(--cyan-500)' }}
+                strokeWidth={2.5}
+              />
+            </div>
+            <h1 className="text-xl font-bold tracking-tight">
+              <span style={{ color: 'var(--text-primary)' }}>FINANCE</span>
+              <span style={{ color: 'var(--cyan-500)' }} className="font-mono-tabular">.AI</span>
+            </h1>
+          </div>
+
+          {/* User info + logout */}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex flex-col items-end">
+              <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                {session.user?.name}
+              </span>
+              <span className="text-xs font-mono-tabular" style={{ color: 'var(--text-tertiary)' }}>
+                {session.user?.email}
+              </span>
+            </div>
+            
+            <Button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              variant="outline"
+              size="sm"
+              className="gap-2 border hover:border-opacity-100 transition-all"
+              style={{
+                borderColor: 'var(--border-default)',
+                background: 'transparent',
+                color: 'var(--text-secondary)'
+              }}
+            >
+              <LogOut size={16} />
+              <span className="hidden md:inline">Logout</span>
+            </Button>
+          </div>
         </div>
-
-        {session?.user && (
-          <>
-            {/* Desktop: Clean User Info */}
-            <div className="hidden md:flex items-center gap-6">
-              <div className="text-right">
-                <p className="text-sm font-semibold text-gray-900">{session.user?.name}</p>
-                <p className="text-xs text-gray-500">{session.user?.email}</p>
-              </div>
-              <button
-                onClick={() => signOut({ callbackUrl: "/login" })}
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
-              >
-                <span>Logout</span>
-                <LogOut size={16} />
-              </button>
-            </div>
-
-            {/* Mobile: Menu */}
-            <div className="md:hidden relative">
-              <button
-                onClick={() => setShowMenu(!showMenu)}
-                className="text-gray-600 hover:text-gray-900 transition-colors p-2"
-                aria-label="Menu"
-              >
-                {showMenu ? <X size={24} /> : <Menu size={24} />}
-              </button>
-
-              {showMenu && (
-                <>
-                  <div 
-                    className="fixed inset-0 bg-black/10 z-40"
-                    onClick={() => setShowMenu(false)}
-                  />
-                  
-                  <div className="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
-                    <div className="p-4 border-b border-gray-100">
-                      <p className="text-sm font-semibold text-gray-900 truncate">{session.user?.name}</p>
-                      <p className="text-xs text-gray-500 truncate mt-1">{session.user?.email}</p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setShowMenu(false);
-                        signOut({ callbackUrl: "/login" });
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-                    >
-                      <LogOut size={18} />
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
