@@ -7,7 +7,6 @@ import TransactionList from "./TransactionList";
 import ExpenseChart from "./ExpenseChart";
 import TransactionModal from "./TransactionModal";
 import { Transaction } from "./TransactionItem";
-import { Button } from "./ui/button";
 import { ToastContainer, ToastType } from "./ui/toast";
 
 interface FormData {
@@ -267,7 +266,7 @@ export default function FinanceTracker() {
       {/* Grid background */}
       <div className="fixed inset-0 grid-bg pointer-events-none" style={{ opacity: 0.4 }} />
       
-      <div className="relative w-full max-w-6xl mx-auto px-4 pb-20 md:pb-10">
+      <div className="relative w-full max-w-6xl mx-auto px-4 pb-28 md:pb-10">
         {/* Desktop Only: Action Bar */}
         <div className="hidden md:flex items-center justify-between gap-2 mb-6 mt-4">
           <div>
@@ -275,11 +274,12 @@ export default function FinanceTracker() {
               <button
                 onClick={handleUndo}
                 disabled={loading}
-                className="px-4 py-2 rounded-lg border font-medium text-sm transition-all hover:border-opacity-100 glow-cyan"
+                className="px-4 py-2 border-2 font-bold text-sm transition-all hover-scale uppercase"
                 style={{
-                  background: 'var(--bg-secondary)',
-                  borderColor: 'var(--cyan-600)',
-                  color: 'var(--cyan-500)'
+                  background: '#ffffff',
+                  borderColor: 'var(--ink)',
+                  boxShadow: 'var(--shadow-sm)',
+                  color: 'var(--text-primary)'
                 }}
               >
                 Undo Delete
@@ -294,11 +294,12 @@ export default function FinanceTracker() {
                 fetchStats();
               }}
               disabled={loading}
-              className="px-4 py-2 rounded-lg border font-medium text-sm transition-all hover:border-opacity-100 flex items-center gap-2"
+              className="px-4 py-2 border-2 font-bold text-sm transition-all hover-scale flex items-center gap-2 uppercase"
               style={{
-                background: 'var(--bg-secondary)',
-                borderColor: 'var(--border-default)',
-                color: 'var(--text-secondary)'
+                background: '#ffffff',
+                borderColor: 'var(--ink)',
+                boxShadow: 'var(--shadow-sm)',
+                color: 'var(--text-primary)'
               }}
             >
               <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
@@ -309,11 +310,12 @@ export default function FinanceTracker() {
                 resetForm();
                 setShowModal(true);
               }}
-              className="px-4 py-2 rounded-lg border font-medium text-sm transition-all glow-cyan flex items-center gap-2"
+              className="px-4 py-2 border-2 font-bold text-sm transition-all hover-scale flex items-center gap-2 uppercase"
               style={{
-                background: 'var(--cyan-600)',
-                borderColor: 'var(--cyan-500)',
-                color: 'var(--bg-primary)'
+                background: 'var(--accent-500)',
+                borderColor: 'var(--ink)',
+                boxShadow: 'var(--shadow-accent)',
+                color: 'var(--ink)'
               }}
             >
               <PlusCircle size={20} />
@@ -327,25 +329,17 @@ export default function FinanceTracker() {
           {activeTab === "home" && (
             <div className="space-y-4">
               <StatsCards stats={stats} />
-              <div className="rounded-lg border p-4" style={{
-                background: 'var(--bg-secondary)',
-                borderColor: 'var(--border-default)'
-              }}>
-                <h3 className="text-label mb-3">
-                  Recent Transactions
-                </h3>
-                <TransactionList
-                  transactions={transactions.slice(0, 5)}
-                  filter={filter}
-                  setFilter={setFilter}
-                  loading={loading}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                  page={page}
-                  totalPages={totalPages}
-                  onPageChange={setPage}
-                />
-              </div>
+              <TransactionList
+                transactions={transactions.slice(0, 5)}
+                filter={filter}
+                setFilter={setFilter}
+                loading={loading}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
             </div>
           )}
           
@@ -411,11 +405,12 @@ export default function FinanceTracker() {
       </div>
 
       {/* Mobile Only: Bottom Navigation - Futuristic */}
-      <nav 
-        className="block md:hidden fixed bottom-0 left-0 right-0 border-t backdrop-blur-futuristic z-50"
+      <nav
+        className="block md:hidden fixed bottom-0 left-0 right-0 z-50"
         style={{
-          background: 'oklch(12% 0.015 210 / 0.95)',
-          borderColor: 'var(--border-default)'
+          background: '#ffffff',
+          borderTop: '2px solid var(--ink)',
+          paddingBottom: 'env(safe-area-inset-bottom)'
         }}
       >
         <div className="grid grid-cols-4 h-16">
@@ -424,7 +419,7 @@ export default function FinanceTracker() {
             onClick={() => setActiveTab("home")}
             className="flex flex-col items-center justify-center gap-1 transition-all"
             style={{
-              color: activeTab === "home" ? "var(--cyan-500)" : "var(--text-tertiary)"
+              color: activeTab === "home" ? "var(--ink)" : "var(--text-tertiary)"
             }}
           >
             <Home size={22} strokeWidth={activeTab === "home" ? 2.5 : 2} />
@@ -436,7 +431,7 @@ export default function FinanceTracker() {
             onClick={() => setActiveTab("chart")}
             className="flex flex-col items-center justify-center gap-1 transition-all"
             style={{
-              color: activeTab === "chart" ? "var(--cyan-500)" : "var(--text-tertiary)"
+              color: activeTab === "chart" ? "var(--ink)" : "var(--text-tertiary)"
             }}
           >
             <BarChart3 size={22} strokeWidth={activeTab === "chart" ? 2.5 : 2} />
@@ -448,7 +443,7 @@ export default function FinanceTracker() {
             onClick={() => setActiveTab("list")}
             className="flex flex-col items-center justify-center gap-1 transition-all"
             style={{
-              color: activeTab === "list" ? "var(--cyan-500)" : "var(--text-tertiary)"
+              color: activeTab === "list" ? "var(--ink)" : "var(--text-tertiary)"
             }}
           >
             <List size={22} strokeWidth={activeTab === "list" ? 2.5 : 2} />
@@ -461,9 +456,9 @@ export default function FinanceTracker() {
               resetForm();
               setShowModal(true);
             }}
-            className="flex flex-col items-center justify-center gap-1 transition-all glow-cyan"
+            className="flex flex-col items-center justify-center gap-1 transition-all"
             style={{
-              color: "var(--cyan-500)"
+              color: "var(--ink)"
             }}
           >
             <PlusCircle size={22} strokeWidth={2.5} />

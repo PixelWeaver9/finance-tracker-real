@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Crown, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Wallet, ArrowRight } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -57,45 +57,43 @@ export default function RegisterPage() {
       className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden"
       style={{ background: 'var(--bg-primary)' }}
     >
-      {/* Subtle gradient overlay */}
-      <div 
-        className="absolute inset-0 opacity-30"
+      {/* Subtle acid overlay */}
+      <div
+        className="absolute inset-0 opacity-40"
         style={{
-          background: 'radial-gradient(circle at top left, oklch(70% 0.12 85 / 0.1), transparent 50%)'
+          background: 'radial-gradient(circle at top left, rgba(203,233,53,0.18), transparent 55%)'
         }}
       />
+      <div className="absolute inset-0 grid-bg pointer-events-none" style={{ opacity: 0.5 }} />
 
       <div className="w-full max-w-md relative z-10 animate-fade-in max-h-screen overflow-y-auto py-4">
         {/* Logo */}
         <div className="text-center mb-8 animate-scale-in">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Crown 
-              size={40} 
-              className="animate-subtle-glow" 
-              style={{ color: 'var(--gold-500)' }}
-              strokeWidth={1.5}
-              fill="var(--gold-600)"
-            />
+          <div className="flex items-center justify-center mb-4">
+            <div
+              className="flex items-center justify-center"
+              style={{ width: 58, height: 58, background: 'var(--accent-500)', border: '2.5px solid var(--ink)', boxShadow: 'var(--shadow-accent)' }}
+            >
+              <Wallet size={28} strokeWidth={2.5} style={{ color: 'var(--ink)' }} />
+            </div>
           </div>
           <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-2xl)',
-            fontWeight: 700,
+            fontSize: 'var(--text-3xl)',
             letterSpacing: 'var(--tracking-tighter)',
             lineHeight: 'var(--leading-tight)',
             marginBottom: '0.5rem'
           }}>
-            <span style={{ color: 'var(--text-primary)' }}>Finance</span>
-            <span style={{ color: 'var(--gold-500)', fontStyle: 'italic' }}> Royale</span>
+            <span style={{ color: 'var(--text-primary)' }}>LEDGR</span>
+            <span style={{ color: 'var(--error-red)' }}>*</span>
           </h1>
           <p className="text-caption" style={{ fontWeight: 500 }}>
-            Join the elite financial management
+            Create your account to get started
           </p>
         </div>
 
         {/* Card */}
-        <div 
-          className="card-luxury accent-gold animate-slide-up animate-delay-200"
+        <div
+          className="card accent-bar animate-slide-up animate-delay-200"
         >
           <div className="p-8">
             {/* Error */}
@@ -103,7 +101,7 @@ export default function RegisterPage() {
               <div 
                 className="mb-6 p-4 rounded-lg text-sm font-medium animate-scale-in"
                 style={{
-                  background: 'oklch(60% 0.18 25 / 0.1)',
+                  background: 'oklch(65% 0.19 18 / 0.12)',
                   borderLeft: '3px solid var(--error-red)',
                   color: 'var(--error-red)',
                 }}
@@ -123,14 +121,7 @@ export default function RegisterPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none"
-                  style={{
-                    background: 'var(--bg-tertiary)',
-                    borderColor: 'var(--border-default)',
-                    color: 'var(--text-primary)',
-                    fontSize: 'var(--text-base)',
-                    fontFamily: 'var(--font-body)'
-                  }}
+                  className="field px-4 py-3"
                   placeholder="John Doe"
                   required
                 />
@@ -145,14 +136,7 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none"
-                  style={{
-                    background: 'var(--bg-tertiary)',
-                    borderColor: 'var(--border-default)',
-                    color: 'var(--text-primary)',
-                    fontSize: 'var(--text-base)',
-                    fontFamily: 'var(--font-body)'
-                  }}
+                  className="field px-4 py-3"
                   placeholder="your@email.com"
                   required
                 />
@@ -168,12 +152,7 @@ export default function RegisterPage() {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 pr-12 rounded-lg border transition-all focus:outline-none"
-                    style={{
-                      background: 'var(--bg-tertiary)',
-                      borderColor: 'var(--border-default)',
-                      color: 'var(--text-primary)',
-                    }}
+                    className="field px-4 py-3 pr-12"
                     placeholder="Min. 6 characters"
                     required
                   />
@@ -197,14 +176,7 @@ export default function RegisterPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none"
-                  style={{
-                    background: 'var(--bg-tertiary)',
-                    borderColor: 'var(--border-default)',
-                    color: 'var(--text-primary)',
-                    fontSize: 'var(--text-base)',
-                    fontFamily: 'var(--font-body)'
-                  }}
+                  className="field px-4 py-3"
                   placeholder="Repeat password"
                   required
                 />
@@ -214,12 +186,14 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-lg transition-all hover-scale shadow-gold flex items-center justify-center gap-2 mt-6"
+                className="w-full py-3.5 transition-all hover-scale flex items-center justify-center gap-2 mt-6 uppercase"
                 style={{
-                  background: 'var(--gradient-gold)',
-                  color: 'var(--bg-primary)',
+                  background: 'var(--accent-500)',
+                  color: 'var(--ink)',
+                  border: '2px solid var(--ink)',
+                  boxShadow: 'var(--shadow-accent)',
                   fontSize: 'var(--text-sm)',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   letterSpacing: 'var(--tracking-wide)'
                 }}
               >
@@ -235,17 +209,18 @@ export default function RegisterPage() {
             </form>
 
             {/* Divider */}
-            <div className="divider-luxury my-6" />
+            <div className="divider my-6" />
 
             {/* Login Link */}
             <p className="text-center text-caption">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="transition-all hover:underline"
-                style={{ 
-                  color: 'var(--gold-500)',
-                  fontWeight: 600
+                className="transition-all hover:underline uppercase"
+                style={{
+                  color: 'var(--text-primary)',
+                  fontWeight: 700,
+                  textDecoration: 'underline'
                 }}
               >
                 Sign in
@@ -256,7 +231,7 @@ export default function RegisterPage() {
 
         {/* Footer */}
         <p className="text-center text-micro mt-8 animate-fade-in animate-delay-400">
-          Finance Royale · Premium Financial Management
+          LEDGR · AI-Powered Money Management
         </p>
       </div>
     </div>

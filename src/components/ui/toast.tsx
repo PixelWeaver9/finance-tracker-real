@@ -29,22 +29,28 @@ export function Toast({ message, type, onClose, duration = 5000 }: ToastProps) {
     setTimeout(onClose, 200);
   };
 
-  const bgColor = {
-    success: "bg-green-50 border-green-200 text-green-800",
-    error: "bg-red-50 border-red-200 text-red-800",
-    info: "bg-blue-50 border-blue-200 text-blue-800",
+  const tone = {
+    success: { color: 'var(--success-green)' },
+    error: { color: 'var(--error-red)' },
+    info: { color: 'var(--ink)' },
   }[type];
 
   return (
     <div
-      className={`${bgColor} border rounded-lg px-4 py-3 shadow-sm flex items-start gap-3 min-w-[320px] max-w-md transition-all ${
+      className={`card px-4 py-3 flex items-start gap-3 min-w-[300px] max-w-md transition-all ${
         isExiting ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
       }`}
+      style={{
+        background: '#ffffff',
+        border: '2px solid var(--ink)',
+        borderLeft: `6px solid ${tone.color}`,
+      }}
     >
-      <p className="flex-1 text-sm font-medium">{message}</p>
+      <p className="flex-1 text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{message}</p>
       <button
         onClick={handleClose}
-        className="text-current opacity-60 hover:opacity-100 transition-opacity"
+        className="opacity-60 hover:opacity-100 transition-opacity"
+        style={{ color: 'var(--text-tertiary)' }}
       >
         <X size={16} />
       </button>

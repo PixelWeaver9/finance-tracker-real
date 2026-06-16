@@ -33,6 +33,15 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# secrets / local notes (NEVER commit)
+VERCEL-ENV-VARS.txt
+.mcp.json
+
+# local dev / verification artifacts
+.devserver.log
+.shot-*.png
+scripts/shot.mjs
+
 # vercel
 .vercel
 

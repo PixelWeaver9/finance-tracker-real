@@ -44,24 +44,24 @@ export default function TransactionItem({
   onDelete,
 }: TransactionItemProps) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-xl hover:border-opacity-100 transition-all group hover-lift gap-3 sm:gap-0"
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-2 transition-all group hover-lift gap-3 sm:gap-0"
       style={{
-        background: 'var(--bg-elevated)',
-        borderColor: 'var(--border-default)'
+        background: '#ffffff',
+        borderColor: 'var(--ink)'
       }}
     >
       <div className="flex items-start sm:items-center gap-4">
         <div
-          className="shrink-0 p-2.5 rounded-xl border"
+          className="shrink-0 p-2.5"
           style={{
-            background: transaction.type === "income" ? 'oklch(65% 0.15 145 / 0.1)' : 'oklch(60% 0.18 25 / 0.1)',
-            borderColor: transaction.type === "income" ? 'var(--success-green)' : 'var(--error-red)'
+            background: transaction.type === "income" ? 'var(--success-green)' : 'var(--error-red)',
+            border: '2px solid var(--ink)',
           }}
         >
           {transaction.type === "income" ? (
-            <TrendingUp size={20} style={{ color: 'var(--success-green)' }} />
+            <TrendingUp size={20} strokeWidth={2.5} style={{ color: '#ffffff' }} />
           ) : (
-            <TrendingDown size={20} style={{ color: 'var(--error-red)' }} />
+            <TrendingDown size={20} strokeWidth={2.5} style={{ color: '#ffffff' }} />
           )}
         </div>
 
@@ -70,11 +70,11 @@ export default function TransactionItem({
             <h3 className="text-body-emphasis truncate">{transaction.category}</h3>
             {transaction.confidence > 0 && (
               <span
-                className="shrink-0 text-micro px-2 py-0.5 rounded border flex items-center gap-1 whitespace-nowrap"
+                className="shrink-0 text-micro px-2 py-0.5 border flex items-center gap-1 whitespace-nowrap"
                 style={{
-                  background: 'oklch(58% 0.18 290 / 0.1)',
-                  borderColor: 'var(--violet-500)',
-                  color: 'var(--violet-500)'
+                  background: 'var(--accent-500)',
+                  border: '1.5px solid var(--ink)',
+                  color: 'var(--ink)'
                 }}
                 title={`AI Confidence: ${Math.round(transaction.confidence * 100)}%`}
               >

@@ -2,8 +2,6 @@
 
 import { RefreshCw, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 import TransactionItem, { Transaction } from "./TransactionItem";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -28,40 +26,54 @@ export default function TransactionList({
   totalPages,
   onPageChange,
 }: TransactionListProps) {
-  return (
-    <Card className="flex-1 flex flex-col min-h-[500px] border-black/15">
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <CardTitle className="text-2xl">Transaction History</CardTitle>
-          <div className="flex gap-2">
-            {(["all", "income", "expense"] as const).map((f) => (
-              <Button
-                key={f}
-                onClick={() => setFilter(f)}
-                variant={filter === f ? "default" : "outline"}
-                size="sm"
-                className="min-w-[90px]"
-              >
-                {f === "all" ? "All" : f === "income" ? "Income" : "Expense"}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </CardHeader>
+  const filters = ["all", "income", "expense"] as const;
 
-      <CardContent className="flex-1 flex flex-col pt-0">
+  return (
+    <div className="card flex-1 flex flex-col min-h-[500px] p-5 md:p-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-4 mb-5">
+        <h2 style={{ fontSize: 'var(--text-lg)', color: 'var(--text-primary)' }}>
+          Transaction History
+        </h2>
+        <div className="flex" style={{ border: '2px solid var(--ink)' }}>
+          {filters.map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className="px-3.5 py-1.5 transition-all uppercase"
+              style={{
+                background: filter === f ? 'var(--accent-500)' : '#ffffff',
+                color: 'var(--ink)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'var(--text-xs)',
+                fontWeight: 700,
+                letterSpacing: 'var(--tracking-wide)',
+                opacity: filter === f ? 1 : 0.5,
+              }}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="flex-1 flex flex-col">
         {loading ? (
-          <div className="text-center py-20 animate-fade-in">
-            <RefreshCw size={40} className="animate-spin text-gray-900 mx-auto mb-4" />
-            <p className="text-gray-600 text-sm">Loading transactions...</p>
+          <div className="text-center py-20 animate-fade-in flex flex-col items-center justify-center flex-1">
+            <RefreshCw size={36} className="animate-spin mx-auto mb-4" style={{ color: 'var(--ink)' }} />
+            <p className="text-caption">Loading transactions...</p>
           </div>
         ) : transactions.length === 0 ? (
-          <div className="text-center py-20 flex flex-col items-center justify-center h-full animate-fade-in">
-            <div className="bg-gray-50 w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-gray-200">
-              <FileText size={32} className="text-gray-400" />
+          <div className="text-center py-20 flex flex-col items-center justify-center flex-1 animate-fade-in">
+            <div
+              className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 border"
+              style={{ background: 'var(--bg-tertiary)', borderColor: 'var(--border-default)' }}
+            >
+              <FileText size={32} style={{ color: 'var(--text-tertiary)' }} />
             </div>
-            <p className="text-gray-900 font-semibold text-lg">No transactions yet</p>
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-body-emphasis text-lg">No transactions yet</p>
+            <p className="text-caption mt-2">
               Click &quot;Add Transaction&quot; to get started
             </p>
           </div>
@@ -69,10 +81,10 @@ export default function TransactionList({
           <>
             <div className="space-y-3 flex-1">
               {transactions.map((transaction, index) => (
-                <div 
+                <div
                   key={transaction.id}
                   className="animate-slide-in"
-                  style={{ animationDelay: `${index * 50}ms` }}
+                  style={{ animationDelay: `${index * 40}ms` }}
                 >
                   <TransactionItem
                     transaction={transaction}
@@ -86,35 +98,36 @@ export default function TransactionList({
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-600 font-medium">
-                  Page <span className="text-gray-900">{page}</span> of <span className="text-gray-900">{totalPages}</span>
+              <div className="flex items-center justify-between mt-6 pt-5" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                <p className="text-caption">
+                  Page <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{page}</span> of{" "}
+                  <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{totalPages}</span>
                 </p>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  <button
                     onClick={() => onPageChange(page - 1)}
                     disabled={page === 1}
+                    className="px-3 py-2 border-2 text-sm font-bold uppercase transition-all hover-scale flex items-center gap-1 disabled:opacity-40 disabled:pointer-events-none"
+                    style={{ borderColor: 'var(--ink)', background: '#ffffff', boxShadow: 'var(--shadow-sm)', color: 'var(--text-primary)' }}
                   >
                     <ChevronLeft size={16} />
                     Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  </button>
+                  <button
                     onClick={() => onPageChange(page + 1)}
                     disabled={page === totalPages}
+                    className="px-3 py-2 border-2 text-sm font-bold uppercase transition-all hover-scale flex items-center gap-1 disabled:opacity-40 disabled:pointer-events-none"
+                    style={{ borderColor: 'var(--ink)', background: '#ffffff', boxShadow: 'var(--shadow-sm)', color: 'var(--text-primary)' }}
                   >
                     Next
                     <ChevronRight size={16} />
-                  </Button>
+                  </button>
                 </div>
               </div>
             )}
           </>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

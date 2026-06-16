@@ -4,16 +4,16 @@ import { useState, useEffect, useCallback } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { RefreshCw } from "lucide-react";
 
-// Clean professional palette
+// Brutalist categorical palette — bold, high-contrast on paper
 const COLORS = [
-  "#2563eb", // blue-600
-  "#059669", // emerald-600
-  "#f59e0b", // amber-500
-  "#ef4444", // red-500
-  "#8b5cf6", // violet-500
-  "#06b6d4", // cyan-500
-  "#ec4899", // pink-500
-  "#6366f1", // indigo-500
+  "#f2401f", // expense red
+  "#2b57f0", // cat blue
+  "#16120b", // ink
+  "#ffb200", // amber
+  "#1e8c4e", // income green
+  "#7c3aed", // violet
+  "#0891b2", // teal
+  "#db2777", // pink
 ];
 
 interface ChartData {
@@ -60,7 +60,7 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="card-luxury p-3">
+        <div className="card p-3">
           <p className="text-caption mb-1">{payload[0].name}</p>
           <p className="text-body-emphasis font-mono-tabular">{formatCurrency(payload[0].value)}</p>
         </div>
@@ -70,40 +70,44 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
   };
 
   return (
-    <div className="card-luxury p-5 md:p-6 flex flex-col h-[400px]">
+    <div className="card p-5 md:p-6 flex flex-col h-[400px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 style={{
-          fontFamily: 'var(--font-display)',
           fontSize: 'var(--text-lg)',
           fontWeight: 600,
           color: 'var(--text-primary)'
         }}>
           Category Distribution
         </h2>
-        <div className="flex gap-2 p-1 rounded-lg" style={{ background: 'var(--bg-tertiary)' }}>
+        <div className="flex" style={{ border: '2px solid var(--ink)' }}>
           <button
             onClick={() => setPeriod("weekly")}
-            className="px-3 py-1.5 rounded-md transition-all"
+            className="px-3 py-1.5 transition-all uppercase"
             style={{
-              background: period === "weekly" ? 'var(--bg-elevated)' : 'transparent',
-              color: period === "weekly" ? 'var(--text-primary)' : 'var(--text-tertiary)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 500,
-              boxShadow: period === "weekly" ? 'var(--shadow-sm)' : 'none'
+              background: period === "weekly" ? 'var(--accent-500)' : '#ffffff',
+              color: 'var(--ink)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 700,
+              letterSpacing: 'var(--tracking-wide)',
+              opacity: period === "weekly" ? 1 : 0.5,
             }}
           >
             7 Days
           </button>
           <button
             onClick={() => setPeriod("monthly")}
-            className="px-3 py-1.5 rounded-md transition-all"
+            className="px-3 py-1.5 transition-all uppercase"
             style={{
-              background: period === "monthly" ? 'var(--bg-elevated)' : 'transparent',
-              color: period === "monthly" ? 'var(--text-primary)' : 'var(--text-tertiary)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 500,
-              boxShadow: period === "monthly" ? 'var(--shadow-sm)' : 'none'
+              background: period === "monthly" ? 'var(--accent-500)' : '#ffffff',
+              color: 'var(--ink)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 700,
+              letterSpacing: 'var(--tracking-wide)',
+              opacity: period === "monthly" ? 1 : 0.5,
+              borderLeft: '2px solid var(--ink)',
             }}
           >
             30 Days
@@ -134,7 +138,9 @@ export default function ExpenseChart({ refreshTrigger }: ExpenseChartProps) {
                 outerRadius="80%"
                 paddingAngle={2}
                 dataKey="value"
-                stroke="none"
+                stroke="#16120b"
+                strokeWidth={2}
+                isAnimationActive={false}
               >
                 {data.map((entry, index) => (
                   <Cell 

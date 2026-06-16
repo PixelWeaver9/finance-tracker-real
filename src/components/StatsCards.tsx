@@ -26,21 +26,24 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       value: stats.income,
       icon: TrendingUp,
       color: "var(--success-green)",
-      bgColor: "oklch(65% 0.15 145 / 0.1)",
+      bgColor: "var(--success-green)",
+      iconFg: "#ffffff",
     },
     {
       label: "Total Expense",
       value: stats.expense,
       icon: TrendingDown,
       color: "var(--error-red)",
-      bgColor: "oklch(60% 0.18 25 / 0.1)",
+      bgColor: "var(--error-red)",
+      iconFg: "#ffffff",
     },
     {
       label: "Net Balance",
       value: stats.balance,
       icon: Wallet,
-      color: stats.balance >= 0 ? "var(--gold-500)" : "var(--error-red)",
-      bgColor: stats.balance >= 0 ? "oklch(70% 0.12 85 / 0.1)" : "oklch(60% 0.18 25 / 0.1)",
+      color: stats.balance >= 0 ? "var(--accent-500)" : "var(--error-red)",
+      bgColor: stats.balance >= 0 ? "var(--accent-500)" : "var(--error-red)",
+      iconFg: stats.balance >= 0 ? "var(--ink)" : "#ffffff",
     },
   ];
 
@@ -51,36 +54,51 @@ export default function StatsCards({ stats }: StatsCardsProps) {
         return (
           <div
             key={card.label}
-            className={`card-luxury accent-gold animate-slide-up animate-delay-${index * 100 + 100}`}
+            className={`card accent-bar hover-lift animate-slide-up animate-delay-${index * 100 + 100}`}
           >
             {/* Content */}
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <p className="text-label mb-3">
-                    {card.label}
-                  </p>
-                  <p className="text-display-number font-mono-tabular">
-                    {formatCurrency(card.value)}
-                  </p>
-                </div>
-                
-                <div 
-                  className="p-3 rounded-lg"
-                  style={{ 
+            <div className="p-5 md:p-6">
+              {/* Label + icon row */}
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <p className="text-label min-w-0 truncate">
+                  {card.label}
+                </p>
+                <div
+                  className="shrink-0 flex items-center justify-center"
+                  style={{
+                    width: 38,
+                    height: 38,
                     background: card.bgColor,
+                    border: '2px solid var(--ink)',
                   }}
                 >
-                  <Icon 
-                    size={24} 
-                    strokeWidth={2}
-                    style={{ color: card.color }}
+                  <Icon
+                    size={20}
+                    strokeWidth={2.5}
+                    style={{ color: card.iconFg }}
                   />
                 </div>
               </div>
-              
+
+              {/* Number — full width, never collides with the icon */}
+              <p
+                className="font-mono-tabular"
+                style={{
+                  fontSize: 'clamp(1.4rem, 2vw, 1.95rem)',
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--text-primary)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {formatCurrency(card.value)}
+              </p>
+
               {/* Subtle divider */}
-              <div className="divider-luxury my-4" />
+              <div className="divider my-4" />
               
               {/* Trend indicator */}
               <div className="flex items-center gap-2">

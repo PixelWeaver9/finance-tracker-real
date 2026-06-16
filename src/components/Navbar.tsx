@@ -1,8 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { LogOut, Crown } from "lucide-react";
-import { Button } from "./ui/button";
+import { LogOut, Wallet } from "lucide-react";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -10,35 +9,35 @@ export default function Navbar() {
   if (!session) return null;
 
   return (
-    <nav 
-      className="sticky top-0 z-40 border-b backdrop-blur-luxury" 
-      style={{ 
-        background: 'oklch(15% 0.008 30 / 0.95)',
-        borderColor: 'var(--border-default)',
-        boxShadow: 'var(--shadow-sm)'
+    <nav
+      className="sticky top-0 z-40"
+      style={{
+        background: '#ffffff',
+        borderBottom: '2px solid var(--ink)',
       }}
     >
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo - Luxury with Crown */}
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Crown 
-              size={24} 
-              className="animate-subtle-glow" 
-              style={{ color: 'var(--gold-500)' }}
-              strokeWidth={2}
-              fill="var(--gold-600)"
-            />
+        {/* Logo */}
+        <div className="flex items-center gap-2.5">
+          <div
+            className="flex items-center justify-center"
+            style={{
+              width: 38,
+              height: 38,
+              background: 'var(--accent-500)',
+              border: '2px solid var(--ink)',
+              boxShadow: 'var(--shadow-sm)',
+            }}
+          >
+            <Wallet size={20} strokeWidth={2.5} style={{ color: 'var(--ink)' }} />
           </div>
-          <h1 style={{ 
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-md)',
-            fontWeight: 600,
+          <h1 style={{
+            fontSize: 'var(--text-lg)',
             letterSpacing: 'var(--tracking-tight)',
-            lineHeight: 1
+            lineHeight: 1,
           }}>
-            <span style={{ color: 'var(--text-primary)' }}>Finance</span>
-            <span style={{ color: 'var(--gold-500)', fontStyle: 'italic' }}> Royale</span>
+            <span style={{ color: 'var(--text-primary)' }}>LEDGR</span>
+            <span style={{ color: 'var(--error-red)' }}>*</span>
           </h1>
         </div>
 
@@ -52,16 +51,19 @@ export default function Navbar() {
               {session.user?.email}
             </span>
           </div>
-          
+
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="px-4 py-2 rounded-lg border transition-all hover-gold flex items-center gap-2"
+            className="px-3.5 py-2 border transition-all hover-scale flex items-center gap-2 uppercase"
             style={{
-              borderColor: 'var(--border-default)',
-              background: 'transparent',
-              color: 'var(--text-secondary)',
+              borderColor: 'var(--ink)',
+              borderWidth: 2,
+              background: '#ffffff',
+              boxShadow: 'var(--shadow-sm)',
+              color: 'var(--text-primary)',
               fontSize: 'var(--text-sm)',
-              fontWeight: 500
+              fontWeight: 700,
+              letterSpacing: 'var(--tracking-wide)',
             }}
           >
             <LogOut size={16} />

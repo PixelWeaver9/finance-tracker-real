@@ -8,7 +8,7 @@ import {
   Calendar,
   FileText,
   RefreshCw,
-  BrainCircuit,
+  Sparkles,
 } from "lucide-react";
 import MLPreview from "./MLPreview";
 
@@ -31,6 +31,8 @@ interface TransactionModalProps {
   onClose: () => void;
 }
 
+const fieldClass = "field px-4 py-3 text-sm";
+
 export default function TransactionModal({
   showModal,
   editingId,
@@ -44,42 +46,52 @@ export default function TransactionModal({
 }: TransactionModalProps) {
   if (!showModal) return null;
 
+  const isExpense = formData.type === "expense";
+  const isIncome = formData.type === "income";
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
+    <div
+      className="fixed inset-0 flex items-center justify-center p-4 z-50 backdrop-blur-luxury animate-fade-in"
+      style={{ background: 'oklch(8% 0.01 250 / 0.6)' }}
+      onClick={onClose}
+    >
+      <div
+        className="card accent-bar w-full max-w-md p-6 animate-scale-in"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 style={{ fontSize: 'var(--text-xl)', fontWeight: 600, color: 'var(--text-primary)' }}>
               {editingId ? "Edit Transaction" : "Add Transaction"}
             </h2>
-            <p className="text-gray-500 text-xs mt-1 flex items-center gap-1.5">
-              <BrainCircuit size={12} /> AI will categorize automatically
+            <p className="text-caption mt-1 flex items-center gap-1.5">
+              <Sparkles size={12} style={{ color: 'var(--ink)' }} /> AI will categorize automatically
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-all text-gray-500 hover:text-gray-700"
+            className="p-2 rounded-lg transition-all hover-scale"
+            style={{ color: 'var(--text-tertiary)', background: 'var(--bg-tertiary)' }}
           >
             <X size={20} />
           </button>
         </div>
 
         <div className="space-y-5">
-          {/* Tipe Transaksi */}
+          {/* Transaction Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Transaction Type
-            </label>
+            <label className="text-label block mb-2">Transaction Type</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, type: "expense" })}
-                className={`p-3 rounded-lg border transition-all text-sm font-medium flex flex-col items-center gap-1.5 ${
-                  formData.type === "expense"
-                    ? "border-red-500 bg-red-50 text-red-600"
-                    : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
-                }`}
+                className="p-3 border-2 transition-all text-sm font-bold uppercase flex flex-col items-center gap-1.5"
+                style={{
+                  borderColor: isExpense ? 'var(--error-red)' : 'var(--border-default)',
+                  background: isExpense ? 'oklch(65% 0.19 18 / 0.12)' : 'var(--bg-tertiary)',
+                  color: isExpense ? 'var(--error-red)' : 'var(--text-secondary)',
+                }}
               >
                 <TrendingDown size={20} />
                 Expense
@@ -87,11 +99,12 @@ export default function TransactionModal({
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, type: "income" })}
-                className={`p-3 rounded-lg border transition-all text-sm font-medium flex flex-col items-center gap-1.5 ${
-                  formData.type === "income"
-                    ? "border-green-500 bg-green-50 text-green-600"
-                    : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
-                }`}
+                className="p-3 border-2 transition-all text-sm font-bold uppercase flex flex-col items-center gap-1.5"
+                style={{
+                  borderColor: isIncome ? 'var(--success-green)' : 'var(--border-default)',
+                  background: isIncome ? 'oklch(74% 0.16 158 / 0.12)' : 'var(--bg-tertiary)',
+                  color: isIncome ? 'var(--success-green)' : 'var(--text-secondary)',
+                }}
               >
                 <TrendingUp size={20} />
                 Income
@@ -99,70 +112,63 @@ export default function TransactionModal({
             </div>
           </div>
 
-          {/* Deskripsi */}
+          {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <div className="flex items-center gap-2">
-                <FileText size={16} />
-                Description
-              </div>
+            <label className="text-label block mb-2 flex items-center gap-2">
+              <FileText size={14} /> Description
             </label>
             <input
               type="text"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+              className={fieldClass}
               placeholder="e.g., lunch at cafe, gas refill, monthly salary..."
             />
             <MLPreview mlLoading={mlLoading} mlStatus={mlStatus} />
           </div>
 
-          {/* Jumlah */}
+          {/* Amount */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <div className="flex items-center gap-2">
-                <DollarSign size={16} />
-                Amount (IDR)
-              </div>
+            <label className="text-label block mb-2 flex items-center gap-2">
+              <DollarSign size={14} /> Amount (IDR)
             </label>
             <input
               type="number"
               value={formData.amount}
               onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+              className={`${fieldClass} font-mono-tabular`}
               placeholder="Enter amount"
             />
           </div>
 
-          {/* Tanggal */}
+          {/* Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <div className="flex items-center gap-2">
-                <Calendar size={16} />
-                Date
-              </div>
+            <label className="text-label block mb-2 flex items-center gap-2">
+              <Calendar size={14} /> Date
             </label>
             <input
               type="date"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+              className={fieldClass}
             />
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-2">
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium"
               disabled={loading}
+              className="flex-1 px-4 py-3 border-2 transition-all hover-scale text-sm font-bold uppercase disabled:opacity-50"
+              style={{ borderColor: 'var(--ink)', background: '#ffffff', boxShadow: 'var(--shadow-sm)', color: 'var(--text-primary)' }}
             >
               Cancel
             </button>
             <button
               onClick={onSubmit}
-              className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm font-medium"
               disabled={loading}
+              className="flex-1 px-4 py-3 border-2 transition-all hover-scale flex items-center justify-center gap-2 text-sm font-bold uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: 'var(--accent-500)', borderColor: 'var(--ink)', boxShadow: 'var(--shadow-accent)', color: 'var(--ink)' }}
             >
               {loading ? (
                 <>
