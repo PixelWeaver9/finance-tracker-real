@@ -206,7 +206,14 @@ h4 { font-size: var(--text-md); }
   :root {
     --text-3xl: 2.074rem;
     --text-2xl: 1.728rem;
+    /* Softer hard-shadows on phones so cards don't read as tilted/lopsided */
+    --shadow-sm: 1px 1px 0 #16120b;
+    --shadow-md: 2px 2px 0 #16120b;
+    --shadow-lg: 3px 3px 0 #16120b;
+    --shadow-accent: 2px 2px 0 #16120b;
   }
+  .card:hover { box-shadow: 3px 3px 0 var(--ink); }
+  .hover-lift:hover { transform: none; box-shadow: 3px 3px 0 var(--ink); }
 }
 
 /* Accent text -> solid ink (brand handled inline) */
