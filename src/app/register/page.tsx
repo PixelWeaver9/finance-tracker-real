@@ -98,12 +98,13 @@ export default function RegisterPage() {
           <div className="p-8">
             {/* Error */}
             {error && (
-              <div 
-                className="mb-6 p-4 rounded-lg text-sm font-medium animate-scale-in"
+              <div
+                className="mb-6 p-4 text-sm font-semibold animate-scale-in"
                 style={{
-                  background: 'oklch(65% 0.19 18 / 0.12)',
-                  borderLeft: '3px solid var(--error-red)',
-                  color: 'var(--error-red)',
+                  background: '#fdecea',
+                  border: '2px solid var(--ink)',
+                  borderLeft: '6px solid var(--error-red)',
+                  color: 'var(--ink)',
                 }}
               >
                 {error}

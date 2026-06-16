@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -13,6 +13,16 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [registered, setRegistered] = useState(false);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("registered") === "true"
+    ) {
+      setRegistered(true);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,14 +92,30 @@ export default function LoginPage() {
           className="card accent-bar animate-slide-up animate-delay-200"
         >
           <div className="p-8">
+            {/* Registered success */}
+            {registered && !error && (
+              <div
+                className="mb-6 p-4 text-sm font-semibold animate-scale-in"
+                style={{
+                  background: '#eafbe7',
+                  border: '2px solid var(--ink)',
+                  borderLeft: '6px solid var(--success-green)',
+                  color: 'var(--ink)',
+                }}
+              >
+                Account created — please sign in to continue.
+              </div>
+            )}
+
             {/* Error */}
             {error && (
               <div
-                className="mb-6 p-4 rounded-lg text-sm font-medium animate-scale-in"
+                className="mb-6 p-4 text-sm font-semibold animate-scale-in"
                 style={{
-                  background: 'oklch(65% 0.19 18 / 0.12)',
-                  borderLeft: '3px solid var(--error-red)',
-                  color: 'var(--error-red)',
+                  background: '#fdecea',
+                  border: '2px solid var(--ink)',
+                  borderLeft: '6px solid var(--error-red)',
+                  color: 'var(--ink)',
                 }}
               >
                 {error}
