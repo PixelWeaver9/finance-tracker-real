@@ -66,7 +66,7 @@ export default function RegisterPage() {
       />
       <div className="absolute inset-0 grid-bg pointer-events-none" style={{ opacity: 0.5 }} />
 
-      <div className="w-full max-w-md relative z-10 animate-fade-in max-h-screen overflow-y-auto overflow-x-hidden px-1 py-4">
+      <div className="w-full max-w-md relative z-10 animate-fade-in max-h-screen overflow-y-auto overflow-x-hidden no-scrollbar px-1 py-4">
         {/* Logo */}
         <div className="text-center mb-8 animate-scale-in">
           <div className="flex items-center justify-center mb-4">

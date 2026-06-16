@@ -334,13 +334,20 @@ h4 { font-size: var(--text-md); }
    SCROLLBAR
    ============================================ */
 
-::-webkit-scrollbar { width: 12px; height: 12px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--ink);
-  border: 3px solid var(--bg-primary);
+  background: rgba(22, 18, 11, 0.22);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-700); }
+::-webkit-scrollbar-thumb:hover { background: rgba(22, 18, 11, 0.42); }
+
+/* Firefox */
+html { scrollbar-width: thin; scrollbar-color: rgba(22, 18, 11, 0.22) transparent; }
+
+/* Fully hide scrollbar where a visible bar would look like a stray black strip
+   (still scrollable by touch/wheel) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 /* ============================================
    INPUTS
